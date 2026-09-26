@@ -1,0 +1,736 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "跨国台风洪涝试点产品",
+  "description": "把获奖参赛项目组织为可在多国本地部署的试点产品。技术能力、训练数据边界、设备依赖、部署地点、责任机构、演练脚本、验收指标各自版本化；获奖结果不是上线许可。所有字段为虚构样例，不含真实个人信息或凭据。",
+  "type": "object",
+  "required": [
+    "product_id",
+    "product_name",
+    "schema_version",
+    "source_project",
+    "artifacts",
+    "organizations",
+    "country_profiles",
+    "deployments",
+    "drills",
+    "operations",
+    "cross_border_sharing",
+    "governance"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "product_id": { "type": "string", "minLength": 1 },
+    "product_name": { "type": "string", "minLength": 1 },
+    "schema_version": { "type": "integer", "minimum": 1 },
+    "source_project": { "$ref": "#/$defs/sourceProject" },
+    "artifacts": {
+      "type": "object",
+      "description": "七个工件族，每族独立版本化，部署只能按精确版本引用。",
+      "required": [
+        "technical_capability",
+        "training_data_boundary",
+        "equipment_dependency",
+        "deployment_site",
+        "responsible_organization",
+        "drill_script",
+        "acceptance_metric"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "technical_capability": { "$ref": "#/$defs/artifactFamily" },
+        "training_data_boundary": { "$ref": "#/$defs/artifactFamily" },
+        "equipment_dependency": { "$ref": "#/$defs/artifactFamily" },
+        "deployment_site": { "$ref": "#/$defs/artifactFamily" },
+        "responsible_organization": { "$ref": "#/$defs/artifactFamily" },
+        "drill_script": { "$ref": "#/$defs/artifactFamily" },
+        "acceptance_metric": { "$ref": "#/$defs/artifactFamily" }
+      }
+    },
+    "organizations": {
+      "type": "array",
+      "minItems": 7,
+      "items": { "$ref": "#/$defs/organization" }
+    },
+    "country_profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/countryProfile" }
+    },
+    "deployments": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/deployment" }
+    },
+    "drills": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/drill" }
+    },
+    "operations": {
+      "type": "object",
+      "required": ["degradation_events", "manual_takeovers"],
+      "additionalProperties": false,
+      "properties": {
+        "degradation_events": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/degradationEvent" }
+        },
+        "manual_takeovers": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/manualTakeover" }
+        }
+      }
+    },
+    "cross_border_sharing": { "$ref": "#/$defs/crossBorderSharing" },
+    "governance": { "$ref": "#/$defs/governance" }
+  },
+  "$defs": {
+    "isoCountry": {
+      "type": "string",
+      "enum": ["VN", "PH", "TH", "ID", "MY", "KH", "LA", "SG", "MM", "BN"]
+    },
+    "semver": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "utcTimestamp": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "artifactType": {
+      "type": "string",
+      "enum": [
+        "technical_capability",
+        "training_data_boundary",
+        "equipment_dependency",
+        "deployment_site",
+        "responsible_organization",
+        "drill_script",
+        "acceptance_metric"
+      ]
+    },
+    "artifactRef": {
+      "type": "object",
+      "required": ["type", "version"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "$ref": "#/$defs/artifactType" },
+        "version": { "$ref": "#/$defs/semver" }
+      }
+    },
+    "sourceProject": {
+      "type": "object",
+      "description": "参赛与获奖记录。获奖仅是入选凭证，不构成任何部署地的上线许可。",
+      "required": [
+        "entry_id",
+        "entry_name",
+        "competition",
+        "award",
+        "award_is_operational_license",
+        "demo_environment",
+        "participating_entries"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "entry_id": { "type": "string", "minLength": 1 },
+        "entry_name": { "type": "string", "minLength": 1 },
+        "competition": { "type": "string", "minLength": 1 },
+        "award": { "type": "string", "minLength": 1 },
+        "award_is_operational_license": {
+          "type": "boolean",
+          "enum": [false],
+          "description": "必须恒为 false：获奖结果不能作为上线许可。"
+        },
+        "demo_environment": { "$ref": "#/$defs/demoEnvironment" },
+        "participating_entries": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["entry_id", "entry_name", "hazard_focus", "award", "selected_for_pilot"],
+            "additionalProperties": false,
+            "properties": {
+              "entry_id": { "type": "string", "minLength": 1 },
+              "entry_name": { "type": "string", "minLength": 1 },
+              "hazard_focus": { "type": "string", "minLength": 1 },
+              "award": { "type": "string", "minLength": 1 },
+              "selected_for_pilot": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "demoEnvironment": {
+      "type": "object",
+      "description": "原演示环境条件；本地条件可能全部不同，故须逐国评审。",
+      "required": ["language", "hazard_scale", "sensor_conditions", "data_egress_regime"],
+      "additionalProperties": false,
+      "properties": {
+        "language": { "type": "string", "minLength": 1 },
+        "hazard_scale": {
+          "type": "object",
+          "required": ["system", "levels"],
+          "additionalProperties": false,
+          "properties": {
+            "system": { "type": "string", "minLength": 1 },
+            "levels": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": ["code", "label"],
+                "additionalProperties": false,
+                "properties": {
+                  "code": { "type": "string", "minLength": 1 },
+                  "label": { "type": "string", "minLength": 1 }
+                }
+              }
+            }
+          }
+        },
+        "sensor_conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "data_egress_regime": { "type": "string", "minLength": 1 }
+      }
+    },
+    "artifactFamily": {
+      "type": "object",
+      "required": ["family", "versions"],
+      "additionalProperties": false,
+      "properties": {
+        "family": { "$ref": "#/$defs/artifactType" },
+        "versions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "version",
+              "status",
+              "summary",
+              "issued_at",
+              "applies_to_countries",
+              "evidence_ids"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "version": { "$ref": "#/$defs/semver" },
+              "status": {
+                "type": "string",
+                "enum": ["draft", "issued", "superseded", "withdrawn"]
+              },
+              "summary": { "type": "string", "minLength": 1 },
+              "issued_at": { "$ref": "#/$defs/utcTimestamp" },
+              "applies_to_countries": {
+                "type": "array",
+                "minItems": 1,
+                "items": { "$ref": "#/$defs/isoCountry" }
+              },
+              "evidence_ids": {
+                "type": "array",
+                "items": { "type": "string", "minLength": 1 }
+              },
+              "withdrawal": {
+                "type": "object",
+                "required": ["withdrawn_at", "reason"],
+                "additionalProperties": false,
+                "properties": {
+                  "withdrawn_at": { "$ref": "#/$defs/utcTimestamp" },
+                  "reason": { "type": "string", "minLength": 1 }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "organization": {
+      "type": "object",
+      "required": ["org_id", "country", "name", "role", "contact_window_timezone"],
+      "additionalProperties": false,
+      "properties": {
+        "org_id": { "type": "string", "minLength": 1 },
+        "country": { "$ref": "#/$defs/isoCountry" },
+        "name": { "type": "string", "minLength": 1 },
+        "role": {
+          "type": "string",
+          "enum": [
+            "national_disaster_authority",
+            "meteorological_service",
+            "water_resources_agency",
+            "local_emergency_response",
+            "pilot_operator_unit",
+            "regulator",
+            "host_secretariat"
+          ]
+        },
+        "contact_window_timezone": {
+          "type": "string",
+          "minLength": 1,
+          "description": "IANA 时区名，例如 Asia/Ho_Chi_Minh。"
+        }
+      }
+    },
+    "countryProfile": {
+      "type": "object",
+      "description": "每国独立掌握本地风险与处置：语言、灾种分级、传感器条件、数据出境规则。",
+      "required": [
+        "country",
+        "language",
+        "hazard_scale_mapping",
+        "sensor_conditions",
+        "data_egress_rules"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "country": { "$ref": "#/$defs/isoCountry" },
+        "language": {
+          "type": "object",
+          "required": ["primary_language", "ui_approved", "alert_dialect_notes"],
+          "additionalProperties": false,
+          "properties": {
+            "primary_language": { "type": "string", "minLength": 1 },
+            "ui_approved": { "type": "boolean" },
+            "alert_dialect_notes": { "type": "string" }
+          }
+        },
+        "hazard_scale_mapping": {
+          "type": "object",
+          "required": ["local_system", "mappings"],
+          "additionalProperties": false,
+          "properties": {
+            "local_system": { "type": "string", "minLength": 1 },
+            "mappings": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": ["demo_level_code", "local_level_code", "local_label", "reviewed"],
+                "additionalProperties": false,
+                "properties": {
+                  "demo_level_code": { "type": "string", "minLength": 1 },
+                  "local_level_code": { "type": "string", "minLength": 1 },
+                  "local_label": { "type": "string", "minLength": 1 },
+                  "reviewed": { "type": "boolean" }
+                }
+              }
+            }
+          }
+        },
+        "sensor_conditions": {
+          "type": "object",
+          "required": ["network_reliability", "calibration_cycle_days", "known_gaps"],
+          "additionalProperties": false,
+          "properties": {
+            "network_reliability": {
+              "type": "string",
+              "enum": ["stable", "intermittent", "frequently_offline"]
+            },
+            "calibration_cycle_days": { "type": "integer", "minimum": 1 },
+            "known_gaps": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "data_egress_rules": {
+          "type": "object",
+          "required": ["cross_border_allowed", "allowed_categories", "authorization_basis", "authorization_granted"],
+          "additionalProperties": false,
+          "properties": {
+            "cross_border_allowed": { "type": "boolean" },
+            "allowed_categories": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["approved_alert_summary"]
+              },
+              "description": "获准跨境的类别；本契约只承认获准的预警摘要。"
+            },
+            "authorization_basis": { "type": "string", "minLength": 1 },
+            "authorization_granted": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "deployment": {
+      "type": "object",
+      "required": [
+        "deployment_id",
+        "country",
+        "site_name",
+        "status",
+        "pinned_artifacts",
+        "gates",
+        "responsible_org_ids",
+        "local_autonomy_statement"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "deployment_id": { "type": "string", "minLength": 1 },
+        "country": { "$ref": "#/$defs/isoCountry" },
+        "site_name": { "type": "string", "minLength": 1 },
+        "status": {
+          "type": "string",
+          "enum": ["blocked_pre_gate", "parallel_shadow", "live_duty", "suspended", "withdrawn"],
+          "description": "blocked_pre_gate=未过闸门不得进入真实值守；parallel_shadow=并行影子运行；live_duty=真实值守。"
+        },
+        "pinned_artifacts": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "description": "七族工件各钉一个精确版本。",
+          "items": { "$ref": "#/$defs/artifactRef" }
+        },
+        "gates": {
+          "type": "object",
+          "description": "本地化评审、数据授权、人员培训、回退方案：缺一项就不能进入真实值守。",
+          "required": [
+            "localization_review",
+            "data_authorization",
+            "personnel_training",
+            "rollback_plan"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "localization_review": { "$ref": "#/$defs/gate" },
+            "data_authorization": { "$ref": "#/$defs/gate" },
+            "personnel_training": { "$ref": "#/$defs/gate" },
+            "rollback_plan": { "$ref": "#/$defs/gate" }
+          }
+        },
+        "responsible_org_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "local_autonomy_statement": {
+          "type": "string",
+          "minLength": 1,
+          "description": "明确该国独立掌握本地风险判断与处置决定。"
+        }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "required": ["passed", "evidence_id", "decided_at"],
+      "additionalProperties": false,
+      "properties": {
+        "passed": { "type": "boolean" },
+        "evidence_id": { "type": "string", "minLength": 1 },
+        "decided_at": { "$ref": "#/$defs/utcTimestamp" },
+        "notes": { "type": "string" }
+      }
+    },
+    "drill": {
+      "type": "object",
+      "required": [
+        "drill_id",
+        "deployment_id",
+        "kind",
+        "script_ref",
+        "timezone",
+        "typhoon_sequence",
+        "injects",
+        "metric_refs",
+        "started_at",
+        "concluded_at",
+        "result",
+        "is_real_event_evidence"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "drill_id": { "type": "string", "minLength": 1 },
+        "deployment_id": { "type": "string", "minLength": 1 },
+        "kind": {
+          "type": "string",
+          "enum": ["tabletop", "functional", "full_scale", "live_event"],
+          "description": "只有 full_scale/live_event 的真实证据可支撑推广决定（由业务规则判定）。"
+        },
+        "script_ref": { "$ref": "#/$defs/artifactRef" },
+        "timezone": { "type": "string", "minLength": 1 },
+        "typhoon_sequence": {
+          "type": "array",
+          "minItems": 1,
+          "description": "台风事件顺序：形成→逼近→登陆→洪涝→减弱，时间用 UTC，另注本地时间。",
+          "items": {
+            "type": "object",
+            "required": ["order", "phase", "utc_at", "local_at", "hazard_level_local_code"],
+            "additionalProperties": false,
+            "properties": {
+              "order": { "type": "integer", "minimum": 1 },
+              "phase": {
+                "type": "string",
+                "enum": ["formation", "approach", "landfall", "flooding", "weakening"]
+              },
+              "utc_at": { "$ref": "#/$defs/utcTimestamp" },
+              "local_at": { "type": "string", "minLength": 1 },
+              "hazard_level_local_code": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "injects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["inject_id", "kind", "utc_at", "expected_auto_degradation_level"],
+            "additionalProperties": false,
+            "properties": {
+              "inject_id": { "type": "string", "minLength": 1 },
+              "kind": {
+                "type": "string",
+                "enum": ["network_outage", "sensor_drift", "confidence_drop"]
+              },
+              "utc_at": { "$ref": "#/$defs/utcTimestamp" },
+              "expected_auto_degradation_level": {
+                "type": "string",
+                "enum": ["L2_assisted", "L1_advisory", "L0_manual_only"]
+              }
+            }
+          }
+        },
+        "metric_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/artifactRef" }
+        },
+        "started_at": { "$ref": "#/$defs/utcTimestamp" },
+        "concluded_at": { "$ref": "#/$defs/utcTimestamp" },
+        "result": {
+          "type": "object",
+          "required": ["passed", "summary", "evidence_id"],
+          "additionalProperties": false,
+          "properties": {
+            "passed": { "type": "boolean" },
+            "summary": { "type": "string", "minLength": 1 },
+            "evidence_id": { "type": "string", "minLength": 1 }
+          }
+        },
+        "is_real_event_evidence": {
+          "type": "boolean",
+          "description": "是否为真实台风事件下的运行证据；桌面推演不得标记为真。"
+        }
+      }
+    },
+    "degradationEvent": {
+      "type": "object",
+      "required": [
+        "event_id",
+        "deployment_id",
+        "trigger",
+        "from_level",
+        "to_level",
+        "utc_at",
+        "automated",
+        "takeover_record_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "event_id": { "type": "string", "minLength": 1 },
+        "deployment_id": { "type": "string", "minLength": 1 },
+        "trigger": {
+          "type": "string",
+          "enum": ["network_outage", "sensor_drift", "confidence_drop", "recovery"]
+        },
+        "from_level": {
+          "type": "string",
+          "enum": ["L3_autonomous", "L2_assisted", "L1_advisory", "L0_manual_only"]
+        },
+        "to_level": {
+          "type": "string",
+          "enum": ["L3_autonomous", "L2_assisted", "L1_advisory", "L0_manual_only"]
+        },
+        "utc_at": { "$ref": "#/$defs/utcTimestamp" },
+        "automated": { "type": "boolean" },
+        "takeover_record_id": {
+          "type": "string",
+          "description": "降级到 L0 时必须存在对应人工接管记录；未降级到 L0 可置 null。"
+        }
+      }
+    },
+    "manualTakeover": {
+      "type": "object",
+      "required": [
+        "record_id",
+        "deployment_id",
+        "operator_org_id",
+        "operator_certificate_id",
+        "utc_at",
+        "reason",
+        "actions_log",
+        "handback_utc_at"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "record_id": { "type": "string", "minLength": 1 },
+        "deployment_id": { "type": "string", "minLength": 1 },
+        "operator_org_id": { "type": "string", "minLength": 1 },
+        "operator_certificate_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "接管人员必须持有效培训证书（引用人员培训闸门证据）。"
+        },
+        "utc_at": { "$ref": "#/$defs/utcTimestamp" },
+        "reason": { "type": "string", "minLength": 1 },
+        "actions_log": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "handback_utc_at": { "$ref": "#/$defs/utcTimestamp" }
+      }
+    },
+    "crossBorderSharing": {
+      "type": "object",
+      "required": ["policy", "shared_items"],
+      "additionalProperties": false,
+      "properties": {
+        "policy": {
+          "type": "object",
+          "required": ["only_approved_alert_summary", "excluded_categories"],
+          "additionalProperties": false,
+          "properties": {
+            "only_approved_alert_summary": { "type": "boolean", "enum": [true] },
+            "excluded_categories": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "shared_items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "share_id",
+              "from_country",
+              "to_countries",
+              "category",
+              "summary_text",
+              "authorized",
+              "utc_at"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "share_id": { "type": "string", "minLength": 1 },
+              "from_country": { "$ref": "#/$defs/isoCountry" },
+              "to_countries": {
+                "type": "array",
+                "minItems": 1,
+                "items": { "$ref": "#/$defs/isoCountry" }
+              },
+              "category": {
+                "type": "string",
+                "enum": ["approved_alert_summary"]
+              },
+              "summary_text": { "type": "string", "minLength": 1 },
+              "authorized": { "type": "boolean" },
+              "utc_at": { "$ref": "#/$defs/utcTimestamp" }
+            }
+          }
+        }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "required": ["signatures", "funding_milestones", "withdrawals", "scale_decisions"],
+      "additionalProperties": false,
+      "properties": {
+        "signatures": {
+          "type": "array",
+          "minItems": 2,
+          "description": "多方签署：主办方、各国责任机构等并行签署，按 UTC 排序，兼顾时区。",
+          "items": {
+            "type": "object",
+            "required": ["signature_id", "org_id", "country", "document", "signed_utc_at", "signed_local_at"],
+            "additionalProperties": false,
+            "properties": {
+              "signature_id": { "type": "string", "minLength": 1 },
+              "org_id": { "type": "string", "minLength": 1 },
+              "country": { "$ref": "#/$defs/isoCountry" },
+              "document": { "type": "string", "minLength": 1 },
+              "signed_utc_at": { "$ref": "#/$defs/utcTimestamp" },
+              "signed_local_at": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "funding_milestones": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["milestone_id", "label", "due_utc_at", "status", "evidence_id"],
+            "additionalProperties": false,
+            "properties": {
+              "milestone_id": { "type": "string", "minLength": 1 },
+              "label": { "type": "string", "minLength": 1 },
+              "due_utc_at": { "$ref": "#/$defs/utcTimestamp" },
+              "status": {
+                "type": "string",
+                "enum": ["pending", "released", "withheld"]
+              },
+              "evidence_id": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "withdrawals": {
+          "type": "array",
+          "description": "成果撤回：工件撤回后，引用该版本的部署/证据不得再用于推广。",
+          "items": {
+            "type": "object",
+            "required": ["withdrawal_id", "artifact_type", "version", "utc_at", "reason", "cascades_to"],
+            "additionalProperties": false,
+            "properties": {
+              "withdrawal_id": { "type": "string", "minLength": 1 },
+              "artifact_type": { "$ref": "#/$defs/artifactType" },
+              "version": { "$ref": "#/$defs/semver" },
+              "utc_at": { "$ref": "#/$defs/utcTimestamp" },
+              "reason": { "type": "string", "minLength": 1 },
+              "cascades_to": {
+                "type": "array",
+                "items": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        },
+        "scale_decisions": {
+          "type": "array",
+          "description": "主办方推广决定：只能依据真实演练与运行证据，且证据工件未被撤回。",
+          "items": {
+            "type": "object",
+            "required": [
+              "decision_id",
+              "country",
+              "decision",
+              "decided_utc_at",
+              "basis_drill_ids",
+              "basis_operation_event_ids",
+              "rationale"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "decision_id": { "type": "string", "minLength": 1 },
+              "country": { "$ref": "#/$defs/isoCountry" },
+              "decision": {
+                "type": "string",
+                "enum": ["hold", "expand", "terminate"]
+              },
+              "decided_utc_at": { "$ref": "#/$defs/utcTimestamp" },
+              "basis_drill_ids": {
+                "type": "array",
+                "items": { "type": "string", "minLength": 1 }
+              },
+              "basis_operation_event_ids": {
+                "type": "array",
+                "items": { "type": "string", "minLength": 1 }
+              },
+              "rationale": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    }
+  }
+}

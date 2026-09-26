@@ -1,0 +1,905 @@
+{
+  "product_id": "asean-typhoon-flood-pilot",
+  "product_name": "台风洪涝预警与值守试点产品（虚构跨国版）",
+  "schema_version": 1,
+  "source_project": {
+    "entry_id": "E-2026-014",
+    "entry_name": "台风洪涝智能预警与辅助值守系统",
+    "competition": "2026 东盟应急科技挑战赛（虚构）",
+    "award": "一等奖（虚构）",
+    "award_is_operational_license": false,
+    "demo_environment": {
+      "language": "zh-CN 演示语料",
+      "hazard_scale": {
+        "system": "演示灾种分级 D1-D4（虚构）",
+        "levels": [
+          { "code": "D1", "label": "关注" },
+          { "code": "D2", "label": "警戒" },
+          { "code": "D3", "label": "严重" },
+          { "code": "D4", "label": "极端" }
+        ]
+      },
+      "sensor_conditions": [
+        "固定水文站与城市 4G 专网，链路稳定",
+        "传感器 30 天标定周期，现场无长期缺测"
+      ],
+      "data_egress_regime": "演示环境封闭运行，数据不出域"
+    },
+    "participating_entries": [
+      {
+        "entry_id": "E-2026-007",
+        "entry_name": "山洪短临预警终端（虚构）",
+        "hazard_focus": "山洪",
+        "award": "二等奖（虚构）",
+        "selected_for_pilot": false
+      },
+      {
+        "entry_id": "E-2026-014",
+        "entry_name": "台风洪涝智能预警与辅助值守系统",
+        "hazard_focus": "台风、风暴潮与城市洪涝",
+        "award": "一等奖（虚构）",
+        "selected_for_pilot": true
+      },
+      {
+        "entry_id": "E-2026-021",
+        "entry_name": "化工园区安全风险感知平台（虚构）",
+        "hazard_focus": "安全生产",
+        "award": "三等奖（虚构）",
+        "selected_for_pilot": false
+      },
+      {
+        "entry_id": "E-2026-033",
+        "entry_name": "灾后救援路径规划助手（虚构）",
+        "hazard_focus": "应急救援",
+        "award": "优秀奖（虚构）",
+        "selected_for_pilot": false
+      }
+    ]
+  },
+  "artifacts": {
+    "technical_capability": {
+      "family": "technical_capability",
+      "versions": [
+        {
+          "version": "1.0.0",
+          "status": "withdrawn",
+          "summary": "演示版模型：在稳定网络与同分布数据上给出 L3 自治建议；间歇网络降级阈值未做本地验证。",
+          "issued_at": "2026-06-01T02:00:00Z",
+          "applies_to_countries": ["VN", "PH", "TH", "ID", "MY", "KH", "LA"],
+          "evidence_ids": ["EV-CAP-100"],
+          "withdrawal": {
+            "withdrawn_at": "2026-07-12T03:00:00Z",
+            "reason": "降级阈值仅在演示网络下验证，不能支撑本地真实值守；引用证据 EV-CAP-100 一并失效。"
+          }
+        },
+        {
+          "version": "1.1.0",
+          "status": "issued",
+          "summary": "增加断网/漂移/低置信度三级自动降级（L2 辅助→L1 咨询→L0 仅人工），输出越南语预警模板；自治动作默认关闭，须本地授权开启。",
+          "issued_at": "2026-07-15T06:00:00Z",
+          "applies_to_countries": ["VN", "PH", "TH", "ID", "MY", "KH", "LA"],
+          "evidence_ids": ["EV-CAP-110"]
+        }
+      ]
+    },
+    "training_data_boundary": {
+      "family": "training_data_boundary",
+      "versions": [
+        {
+          "version": "1.0.0",
+          "status": "issued",
+          "summary": "训练数据仅来自原演示环境：某虚构沿海城市 2019-2023 合成与公开再分析数据；不含任何参与国本地语言语料、本地水文站实测或真实个人数据；模型输出在完成本地复核前不得自动触发疏散等处置。",
+          "issued_at": "2026-06-05T02:00:00Z",
+          "applies_to_countries": ["VN", "PH", "TH", "ID", "MY", "KH", "LA"],
+          "evidence_ids": ["EV-DB-100"]
+        }
+      ]
+    },
+    "equipment_dependency": {
+      "family": "equipment_dependency",
+      "versions": [
+        {
+          "version": "1.0.0",
+          "status": "issued",
+          "summary": "依赖演示用固定水文站、4G 专网与 30 天标定周期；离线缓存能力未声明。",
+          "issued_at": "2026-06-05T02:30:00Z",
+          "applies_to_countries": ["VN", "PH", "TH", "ID", "MY", "KH", "LA"],
+          "evidence_ids": ["EV-EQ-100"]
+        },
+        {
+          "version": "1.1.0",
+          "status": "issued",
+          "summary": "适配越南本地遥测站与间歇移动网络：断网 6 小时本地缓存续传，标定周期对齐本地 90 天规程；漂移自检每 15 分钟一次。",
+          "issued_at": "2026-07-16T06:00:00Z",
+          "applies_to_countries": ["VN"],
+          "evidence_ids": ["EV-EQ-110"]
+        }
+      ]
+    },
+    "deployment_site": {
+      "family": "deployment_site",
+      "versions": [
+        {
+          "version": "1.0.0",
+          "status": "issued",
+          "summary": "越南站点：岘港以东沿海低地虚构断面 VN-S-01/02/03，含 3 个遥测站与 1 个值守点。",
+          "issued_at": "2026-07-10T03:00:00Z",
+          "applies_to_countries": ["VN"],
+          "evidence_ids": ["EV-SITE-VN"]
+        },
+        {
+          "version": "1.1.0",
+          "status": "issued",
+          "summary": "菲律宾站点：阿尔拜省沿海虚构流域 PH-S-01/02，台风季移动网络频繁离线。",
+          "issued_at": "2026-07-12T03:00:00Z",
+          "applies_to_countries": ["PH"],
+          "evidence_ids": ["EV-SITE-PH"]
+        },
+        {
+          "version": "1.2.0",
+          "status": "issued",
+          "summary": "泰国站点：素叻府虚构洼地 TH-S-01，数据出境授权未完成前仅登记不部署。",
+          "issued_at": "2026-07-14T03:00:00Z",
+          "applies_to_countries": ["TH"],
+          "evidence_ids": ["EV-SITE-TH"]
+        },
+        {
+          "version": "1.3.0",
+          "status": "issued",
+          "summary": "印度尼西亚预备站点：雅加达东部虚构流域 ID-S-01（本期仅登记）。",
+          "issued_at": "2026-07-15T03:00:00Z",
+          "applies_to_countries": ["ID"],
+          "evidence_ids": ["EV-SITE-ID"]
+        },
+        {
+          "version": "1.4.0",
+          "status": "issued",
+          "summary": "马来西亚预备站点：哥打巴鲁虚构河段 MY-S-01（本期仅登记）。",
+          "issued_at": "2026-07-16T03:00:00Z",
+          "applies_to_countries": ["MY"],
+          "evidence_ids": ["EV-SITE-MY"]
+        },
+        {
+          "version": "1.5.0",
+          "status": "issued",
+          "summary": "柬埔寨预备站点：金边南部虚构洼地 KH-S-01（本期仅登记）。",
+          "issued_at": "2026-07-17T03:00:00Z",
+          "applies_to_countries": ["KH"],
+          "evidence_ids": ["EV-SITE-KH"]
+        },
+        {
+          "version": "1.6.0",
+          "status": "issued",
+          "summary": "老挝预备站点：万象郊区虚构沟段 LA-S-01（本期仅登记）。",
+          "issued_at": "2026-07-18T03:00:00Z",
+          "applies_to_countries": ["LA"],
+          "evidence_ids": ["EV-SITE-LA"]
+        }
+      ]
+    },
+    "responsible_organization": {
+      "family": "responsible_organization",
+      "versions": [
+        {
+          "version": "1.0.0",
+          "status": "issued",
+          "summary": "各国责任机构以本地防灾主管部门为第一责任方，独立掌握本地风险判断与处置决定；主办方与技术队仅承担支持与证据核验角色。具体机构见 organizations 清单。",
+          "issued_at": "2026-07-08T03:00:00Z",
+          "applies_to_countries": ["VN", "PH", "TH", "ID", "MY", "KH", "LA"],
+          "evidence_ids": ["EV-ORG-100"]
+        }
+      ]
+    },
+    "drill_script": {
+      "family": "drill_script",
+      "versions": [
+        {
+          "version": "1.0.0",
+          "status": "superseded",
+          "summary": "直译演示脚本：未包含网络中断、传感器漂移与置信度下降注入。",
+          "issued_at": "2026-06-10T02:00:00Z",
+          "applies_to_countries": ["VN", "PH", "TH", "ID", "MY", "KH", "LA"],
+          "evidence_ids": ["EV-SCRIPT-100"]
+        },
+        {
+          "version": "1.1.0",
+          "status": "issued",
+          "summary": "本地化台风脚本：形成→逼近→登陆→洪涝→减弱五阶段，强制注入断网/漂移/低置信度，并要求人工接管与回退动作留痕。",
+          "issued_at": "2026-07-18T06:00:00Z",
+          "applies_to_countries": ["VN", "PH", "TH", "ID", "MY", "KH", "LA"],
+          "evidence_ids": ["EV-SCRIPT-110"]
+        }
+      ]
+    },
+    "acceptance_metric": {
+      "family": "acceptance_metric",
+      "versions": [
+        {
+          "version": "1.0.0",
+          "status": "issued",
+          "summary": "基线指标：预警提前期、误报率、降级触发正确率、接管留痕完整率（阈值按演示环境标定）。",
+          "issued_at": "2026-06-12T02:00:00Z",
+          "applies_to_countries": ["VN", "PH", "TH", "ID", "MY", "KH", "LA"],
+          "evidence_ids": ["EV-METRIC-100"]
+        },
+        {
+          "version": "1.1.0",
+          "status": "issued",
+          "summary": "越南本地化阈值：针对间歇网络重设降级触发正确率≥95%、人工接管留痕完整率 100%、预警摘要越南语术语合格率 100%。",
+          "issued_at": "2026-07-22T06:00:00Z",
+          "applies_to_countries": ["VN"],
+          "evidence_ids": ["EV-METRIC-110"]
+        }
+      ]
+    }
+  },
+  "organizations": [
+    {
+      "org_id": "VN-PCTT",
+      "country": "VN",
+      "name": "越南防灾协调机构（虚构地方分支）",
+      "role": "national_disaster_authority",
+      "contact_window_timezone": "Asia/Ho_Chi_Minh"
+    },
+    {
+      "org_id": "VN-KTV",
+      "country": "VN",
+      "name": "越南水文气象台站（虚构）",
+      "role": "meteorological_service",
+      "contact_window_timezone": "Asia/Ho_Chi_Minh"
+    },
+    {
+      "org_id": "VN-OP-01",
+      "country": "VN",
+      "name": "岘港试点值守班组（虚构）",
+      "role": "pilot_operator_unit",
+      "contact_window_timezone": "Asia/Ho_Chi_Minh"
+    },
+    {
+      "org_id": "PH-NDRR",
+      "country": "PH",
+      "name": "菲律宾防灾协调办公室（虚构地区分支）",
+      "role": "national_disaster_authority",
+      "contact_window_timezone": "Asia/Manila"
+    },
+    {
+      "org_id": "PH-HYDS",
+      "country": "PH",
+      "name": "菲律宾水文气象服务站（虚构）",
+      "role": "meteorological_service",
+      "contact_window_timezone": "Asia/Manila"
+    },
+    {
+      "org_id": "TH-NDMR",
+      "country": "TH",
+      "name": "泰国灾害减灾署（虚构地方办公室）",
+      "role": "national_disaster_authority",
+      "contact_window_timezone": "Asia/Bangkok"
+    },
+    {
+      "org_id": "ID-BNPB",
+      "country": "ID",
+      "name": "印度尼西亚减灾机构（虚构联络窗口）",
+      "role": "national_disaster_authority",
+      "contact_window_timezone": "Asia/Jakarta"
+    },
+    {
+      "org_id": "ID-SECRETARIAT",
+      "country": "ID",
+      "name": "东盟应急合作联络处（虚构主办方秘书处）",
+      "role": "host_secretariat",
+      "contact_window_timezone": "Asia/Jakarta"
+    },
+    {
+      "org_id": "MY-DMA",
+      "country": "MY",
+      "name": "马来西亚灾害管理局（虚构窗口）",
+      "role": "national_disaster_authority",
+      "contact_window_timezone": "Asia/Kuala_Lumpur"
+    },
+    {
+      "org_id": "KH-DMA",
+      "country": "KH",
+      "name": "柬埔寨灾害管理机构（虚构窗口）",
+      "role": "national_disaster_authority",
+      "contact_window_timezone": "Asia/Phnom_Penh"
+    },
+    {
+      "org_id": "LA-DMA",
+      "country": "LA",
+      "name": "老挝灾害管理机构（虚构窗口）",
+      "role": "national_disaster_authority",
+      "contact_window_timezone": "Asia/Vientiane"
+    }
+  ],
+  "country_profiles": [
+    {
+      "country": "VN",
+      "language": {
+        "primary_language": "vi",
+        "ui_approved": true,
+        "alert_dialect_notes": "预警模板经中部沿海方言复核（虚构评审记录 EV-LOC-VN-01）。"
+      },
+      "hazard_scale_mapping": {
+        "local_system": "越南本地洪涝/风暴等级 VN-BD（虚构四级）",
+        "mappings": [
+          { "demo_level_code": "D1", "local_level_code": "VN-BD-1", "local_label": "关注（蓝）", "reviewed": true },
+          { "demo_level_code": "D2", "local_level_code": "VN-BD-2", "local_label": "警戒（黄）", "reviewed": true },
+          { "demo_level_code": "D3", "local_level_code": "VN-BD-3", "local_label": "严重（橙）", "reviewed": true },
+          { "demo_level_code": "D4", "local_level_code": "VN-BD-4", "local_label": "极端（红）", "reviewed": true }
+        ]
+      },
+      "sensor_conditions": {
+        "network_reliability": "intermittent",
+        "calibration_cycle_days": 90,
+        "known_gaps": ["暴雨季西部山区 2 个遥测断面周期性离线（虚构）"]
+      },
+      "data_egress_rules": {
+        "cross_border_allowed": true,
+        "allowed_categories": ["approved_alert_summary"],
+        "authorization_basis": "虚构数据管理决定 VDM-2026-017 第 8 条：仅批准脱敏预警摘要出境",
+        "authorization_granted": true
+      }
+    },
+    {
+      "country": "PH",
+      "language": {
+        "primary_language": "fil",
+        "ui_approved": true,
+        "alert_dialect_notes": "菲律宾语/英语双语模板，台风术语已本地化复核（虚构 EV-LOC-PH-01）。"
+      },
+      "hazard_scale_mapping": {
+        "local_system": "菲律宾台风风讯 PSWS 与洪涝预警（虚构映射）",
+        "mappings": [
+          { "demo_level_code": "D1", "local_level_code": "PSWS-1", "local_label": "一号风讯", "reviewed": true },
+          { "demo_level_code": "D2", "local_level_code": "PSWS-2", "local_label": "二号风讯", "reviewed": true },
+          { "demo_level_code": "D3", "local_level_code": "PSWS-3", "local_label": "三号风讯", "reviewed": true },
+          { "demo_level_code": "D4", "local_level_code": "PSWS-4", "local_label": "四号风讯", "reviewed": true }
+        ]
+      },
+      "sensor_conditions": {
+        "network_reliability": "frequently_offline",
+        "calibration_cycle_days": 120,
+        "known_gaps": ["台风登陆后移动网络常中断 4 小时以上（虚构记录）"]
+      },
+      "data_egress_rules": {
+        "cross_border_allowed": true,
+        "allowed_categories": ["approved_alert_summary"],
+        "authorization_basis": "虚构跨境通报备忘录 PH-CB-2026-03",
+        "authorization_granted": true
+      }
+    },
+    {
+      "country": "TH",
+      "language": {
+        "primary_language": "th",
+        "ui_approved": true,
+        "alert_dialect_notes": "泰语模板已做文字评审，但授权未完成前不得对公众发布（虚构 EV-LOC-TH-01）。"
+      },
+      "hazard_scale_mapping": {
+        "local_system": "泰国预警等级 TH-W（虚构映射）",
+        "mappings": [
+          { "demo_level_code": "D1", "local_level_code": "TH-W1", "local_label": "留意", "reviewed": true },
+          { "demo_level_code": "D2", "local_level_code": "TH-W2", "local_label": "警戒", "reviewed": true },
+          { "demo_level_code": "D3", "local_level_code": "TH-W3", "local_label": "严重", "reviewed": true },
+          { "demo_level_code": "D4", "local_level_code": "TH-W4", "local_label": "危急", "reviewed": true }
+        ]
+      },
+      "sensor_conditions": {
+        "network_reliability": "stable",
+        "calibration_cycle_days": 180,
+        "known_gaps": []
+      },
+      "data_egress_rules": {
+        "cross_border_allowed": false,
+        "allowed_categories": [],
+        "authorization_basis": "数据出境授权申请待批（虚构文号待发）",
+        "authorization_granted": false
+      }
+    },
+    {
+      "country": "ID",
+      "language": {
+        "primary_language": "id",
+        "ui_approved": false,
+        "alert_dialect_notes": "印尼语模板尚未完成本地评审，本期不部署。"
+      },
+      "hazard_scale_mapping": {
+        "local_system": "印尼预警等级 ID-W（虚构映射）",
+        "mappings": [
+          { "demo_level_code": "D1", "local_level_code": "ID-W1", "local_label": "siaga", "reviewed": true },
+          { "demo_level_code": "D2", "local_level_code": "ID-W2", "local_label": "waspada", "reviewed": true },
+          { "demo_level_code": "D3", "local_level_code": "ID-W3", "local_label": "bahaya", "reviewed": true },
+          { "demo_level_code": "D4", "local_level_code": "ID-W4", "local_label": "bahaya ekstrem", "reviewed": true }
+        ]
+      },
+      "sensor_conditions": {
+        "network_reliability": "intermittent",
+        "calibration_cycle_days": 60,
+        "known_gaps": ["城市内涝点缺少实时液位站（虚构）"]
+      },
+      "data_egress_rules": {
+        "cross_border_allowed": true,
+        "allowed_categories": ["approved_alert_summary"],
+        "authorization_basis": "虚构区域通报安排 ID-CB-2026-05",
+        "authorization_granted": true
+      }
+    },
+    {
+      "country": "MY",
+      "language": {
+        "primary_language": "ms",
+        "ui_approved": false,
+        "alert_dialect_notes": "马来语模板初译完成，未评审，本期不部署。"
+      },
+      "hazard_scale_mapping": {
+        "local_system": "马来西亚预警等级 MY-W（虚构映射）",
+        "mappings": [
+          { "demo_level_code": "D1", "local_level_code": "MY-W1", "local_label": "peringatan hijau", "reviewed": true },
+          { "demo_level_code": "D2", "local_level_code": "MY-W2", "local_label": "peringatan kuning", "reviewed": true },
+          { "demo_level_code": "D3", "local_level_code": "MY-W3", "local_label": "peringatan jingga", "reviewed": true },
+          { "demo_level_code": "D4", "local_level_code": "MY-W4", "local_label": "peringatan merah", "reviewed": true }
+        ]
+      },
+      "sensor_conditions": {
+        "network_reliability": "stable",
+        "calibration_cycle_days": 120,
+        "known_gaps": []
+      },
+      "data_egress_rules": {
+        "cross_border_allowed": true,
+        "allowed_categories": ["approved_alert_summary"],
+        "authorization_basis": "虚构跨境通报安排 MY-CB-2026-02",
+        "authorization_granted": true
+      }
+    },
+    {
+      "country": "KH",
+      "language": {
+        "primary_language": "km",
+        "ui_approved": false,
+        "alert_dialect_notes": "高棉语模板未评审，本期不部署。"
+      },
+      "hazard_scale_mapping": {
+        "local_system": "柬埔寨预警等级 KH-W（虚构映射）",
+        "mappings": [
+          { "demo_level_code": "D1", "local_level_code": "KH-W1", "local_label": "ប្រកាសដឹង", "reviewed": true },
+          { "demo_level_code": "D2", "local_level_code": "KH-W2", "local_label": "ប្រុងប្រយ័ត្ន", "reviewed": true },
+          { "demo_level_code": "D3", "local_level_code": "KH-W3", "local_label": "គ្រោះថ្នាក់", "reviewed": true },
+          { "demo_level_code": "D4", "local_level_code": "KH-W4", "local_label": "គ្រោះថ្នាក់ខ្លាំង", "reviewed": true }
+        ]
+      },
+      "sensor_conditions": {
+        "network_reliability": "frequently_offline",
+        "calibration_cycle_days": 150,
+        "known_gaps": ["省际光纤雨季易中断（虚构）"]
+      },
+      "data_egress_rules": {
+        "cross_border_allowed": true,
+        "allowed_categories": ["approved_alert_summary"],
+        "authorization_basis": "虚构跨境通报安排 KH-CB-2026-01",
+        "authorization_granted": true
+      }
+    },
+    {
+      "country": "LA",
+      "language": {
+        "primary_language": "lo",
+        "ui_approved": false,
+        "alert_dialect_notes": "老挝语模板未评审，本期不部署。"
+      },
+      "hazard_scale_mapping": {
+        "local_system": "老挝预警等级 LA-W（虚构映射）",
+        "mappings": [
+          { "demo_level_code": "D1", "local_level_code": "LA-W1", "local_label": "ແຈ້ງເຕືອນລະດັບ 1", "reviewed": true },
+          { "demo_level_code": "D2", "local_level_code": "LA-W2", "local_label": "ແຈ້ງເຕືອນລະດັບ 2", "reviewed": true },
+          { "demo_level_code": "D3", "local_level_code": "LA-W3", "local_label": "ແຈ້ງເຕືອນລະດັບ 3", "reviewed": true },
+          { "demo_level_code": "D4", "local_level_code": "LA-W4", "local_label": "ແຈ້ງເຕືອນລະດັບ 4", "reviewed": true }
+        ]
+      },
+      "sensor_conditions": {
+        "network_reliability": "intermittent",
+        "calibration_cycle_days": 120,
+        "known_gaps": ["上游站点供电不稳（虚构）"]
+      },
+      "data_egress_rules": {
+        "cross_border_allowed": true,
+        "allowed_categories": ["approved_alert_summary"],
+        "authorization_basis": "虚构跨境通报安排 LA-CB-2026-01",
+        "authorization_granted": true
+      }
+    }
+  ],
+  "deployments": [
+    {
+      "deployment_id": "dep-vn-danang",
+      "country": "VN",
+      "site_name": "岘港沿海低地试点（虚构）",
+      "status": "live_duty",
+      "pinned_artifacts": [
+        { "type": "technical_capability", "version": "1.1.0" },
+        { "type": "training_data_boundary", "version": "1.0.0" },
+        { "type": "equipment_dependency", "version": "1.1.0" },
+        { "type": "deployment_site", "version": "1.0.0" },
+        { "type": "responsible_organization", "version": "1.0.0" },
+        { "type": "drill_script", "version": "1.1.0" },
+        { "type": "acceptance_metric", "version": "1.1.0" }
+      ],
+      "gates": {
+        "localization_review": {
+          "passed": true,
+          "evidence_id": "EV-LOC-VN-01",
+          "decided_at": "2026-07-10T04:00:00Z",
+          "notes": "越南语界面与灾种分级映射通过，中部沿海方言术语已核。"
+        },
+        "data_authorization": {
+          "passed": true,
+          "evidence_id": "EV-DATA-VN-01",
+          "decided_at": "2026-07-11T04:00:00Z",
+          "notes": "本地数据处理与仅摘要出境授权齐备（VDM-2026-017）。"
+        },
+        "personnel_training": {
+          "passed": true,
+          "evidence_id": "EV-TRAIN-VN-01",
+          "decided_at": "2026-07-13T04:00:00Z",
+          "notes": "值守班组 12 人持虚构证书 CERT-VN-OP-07 至 CERT-VN-OP-18，含降级接管实操考核。"
+        },
+        "rollback_plan": {
+          "passed": true,
+          "evidence_id": "EV-RB-VN-01",
+          "decided_at": "2026-07-14T04:00:00Z",
+          "notes": "可在 30 分钟内回退到本地电话/传真式人工预警流程并封存自动输出。"
+        }
+      },
+      "responsible_org_ids": ["VN-PCTT", "VN-KTV", "VN-OP-01"],
+      "local_autonomy_statement": "越南站点的风险判断、预警发布与处置决定由越南责任机构独立作出；主办方与技术队不代为决策。"
+    },
+    {
+      "deployment_id": "dep-ph-albay",
+      "country": "PH",
+      "site_name": "阿尔拜沿海流域影子运行（虚构）",
+      "status": "parallel_shadow",
+      "pinned_artifacts": [
+        { "type": "technical_capability", "version": "1.1.0" },
+        { "type": "training_data_boundary", "version": "1.0.0" },
+        { "type": "equipment_dependency", "version": "1.0.0" },
+        { "type": "deployment_site", "version": "1.1.0" },
+        { "type": "responsible_organization", "version": "1.0.0" },
+        { "type": "drill_script", "version": "1.1.0" },
+        { "type": "acceptance_metric", "version": "1.0.0" }
+      ],
+      "gates": {
+        "localization_review": { "passed": true, "evidence_id": "EV-LOC-PH-01", "decided_at": "2026-07-22T04:00:00Z" },
+        "data_authorization": { "passed": true, "evidence_id": "EV-DATA-PH-01", "decided_at": "2026-07-23T04:00:00Z" },
+        "personnel_training": { "passed": true, "evidence_id": "EV-TRAIN-PH-01", "decided_at": "2026-07-25T04:00:00Z" },
+        "rollback_plan": { "passed": true, "evidence_id": "EV-RB-PH-01", "decided_at": "2026-07-26T04:00:00Z" }
+      },
+      "responsible_org_ids": ["PH-NDRR", "PH-HYDS"],
+      "local_autonomy_statement": "菲律宾影子运行的所有输出仅作比对，不影响实际预警；是否转真实值守由菲律宾责任机构自行决定。"
+    },
+    {
+      "deployment_id": "dep-th-surat",
+      "country": "TH",
+      "site_name": "素叻洼地登记站点（虚构）",
+      "status": "blocked_pre_gate",
+      "pinned_artifacts": [
+        { "type": "technical_capability", "version": "1.1.0" },
+        { "type": "training_data_boundary", "version": "1.0.0" },
+        { "type": "equipment_dependency", "version": "1.0.0" },
+        { "type": "deployment_site", "version": "1.2.0" },
+        { "type": "responsible_organization", "version": "1.0.0" },
+        { "type": "drill_script", "version": "1.1.0" },
+        { "type": "acceptance_metric", "version": "1.0.0" }
+      ],
+      "gates": {
+        "localization_review": { "passed": true, "evidence_id": "EV-LOC-TH-01", "decided_at": "2026-07-20T04:00:00Z" },
+        "data_authorization": {
+          "passed": false,
+          "evidence_id": "EV-DATA-TH-DENIED",
+          "decided_at": "2026-07-28T04:00:00Z",
+          "notes": "数据出境授权未获批：数据授权闸门不通过，禁止部署与演练接入真实数据。"
+        },
+        "personnel_training": { "passed": true, "evidence_id": "EV-TRAIN-TH-01", "decided_at": "2026-07-24T04:00:00Z" },
+        "rollback_plan": { "passed": true, "evidence_id": "EV-RB-TH-01", "decided_at": "2026-07-26T04:00:00Z" }
+      },
+      "responsible_org_ids": ["TH-NDMR"],
+      "local_autonomy_statement": "泰国站点在数据授权完成前保持登记状态；是否申请、何时申请授权由泰国责任机构自主决定。"
+    }
+  ],
+  "drills": [
+    {
+      "drill_id": "d-vn-fs-01",
+      "deployment_id": "dep-vn-danang",
+      "kind": "full_scale",
+      "script_ref": { "type": "drill_script", "version": "1.1.0" },
+      "timezone": "Asia/Ho_Chi_Minh",
+      "typhoon_sequence": [
+        { "order": 1, "phase": "formation", "utc_at": "2026-08-05T00:00:00Z", "local_at": "2026-08-05 07:00 +07", "hazard_level_local_code": "VN-BD-1" },
+        { "order": 2, "phase": "approach", "utc_at": "2026-08-05T18:00:00Z", "local_at": "2026-08-06 01:00 +07", "hazard_level_local_code": "VN-BD-2" },
+        { "order": 3, "phase": "landfall", "utc_at": "2026-08-06T03:00:00Z", "local_at": "2026-08-06 10:00 +07", "hazard_level_local_code": "VN-BD-3" },
+        { "order": 4, "phase": "flooding", "utc_at": "2026-08-06T06:00:00Z", "local_at": "2026-08-06 13:00 +07", "hazard_level_local_code": "VN-BD-4" },
+        { "order": 5, "phase": "weakening", "utc_at": "2026-08-06T12:00:00Z", "local_at": "2026-08-06 19:00 +07", "hazard_level_local_code": "VN-BD-2" }
+      ],
+      "injects": [],
+      "metric_refs": [{ "type": "acceptance_metric", "version": "1.1.0" }],
+      "started_at": "2026-08-04T22:00:00Z",
+      "concluded_at": "2026-08-06T18:00:00Z",
+      "result": {
+        "passed": true,
+        "summary": "全要素演练通过：五阶段顺序、越南语发布与 30 分钟回退均达标；为模拟台风，非真实事件。",
+        "evidence_id": "EV-DRILL-VN-FS"
+      },
+      "is_real_event_evidence": false
+    },
+    {
+      "drill_id": "d-vn-live-01",
+      "deployment_id": "dep-vn-danang",
+      "kind": "live_event",
+      "script_ref": { "type": "drill_script", "version": "1.1.0" },
+      "timezone": "Asia/Ho_Chi_Minh",
+      "typhoon_sequence": [
+        { "order": 1, "phase": "formation", "utc_at": "2026-08-22T00:00:00Z", "local_at": "2026-08-22 07:00 +07", "hazard_level_local_code": "VN-BD-1" },
+        { "order": 2, "phase": "approach", "utc_at": "2026-08-23T12:00:00Z", "local_at": "2026-08-23 19:00 +07", "hazard_level_local_code": "VN-BD-2" },
+        { "order": 3, "phase": "landfall", "utc_at": "2026-08-24T21:00:00Z", "local_at": "2026-08-25 04:00 +07", "hazard_level_local_code": "VN-BD-3" },
+        { "order": 4, "phase": "flooding", "utc_at": "2026-08-24T23:00:00Z", "local_at": "2026-08-25 06:00 +07", "hazard_level_local_code": "VN-BD-4" },
+        { "order": 5, "phase": "weakening", "utc_at": "2026-08-25T18:00:00Z", "local_at": "2026-08-26 01:00 +07", "hazard_level_local_code": "VN-BD-2" }
+      ],
+      "injects": [
+        { "inject_id": "inj-net-01", "kind": "network_outage", "utc_at": "2026-08-24T21:10:00Z", "expected_auto_degradation_level": "L2_assisted" },
+        { "inject_id": "inj-drift-01", "kind": "sensor_drift", "utc_at": "2026-08-24T21:40:00Z", "expected_auto_degradation_level": "L1_advisory" },
+        { "inject_id": "inj-conf-01", "kind": "confidence_drop", "utc_at": "2026-08-24T22:20:00Z", "expected_auto_degradation_level": "L0_manual_only" }
+      ],
+      "metric_refs": [{ "type": "acceptance_metric", "version": "1.1.0" }],
+      "started_at": "2026-08-22T00:00:00Z",
+      "concluded_at": "2026-08-26T01:00:00Z",
+      "result": {
+        "passed": true,
+        "summary": "真实台风 PILOT-07（虚构编号）值守：三次异常均自动降级，L0 阶段人工接管并完整留痕，摘要跨境通报一次。",
+        "evidence_id": "EV-DRILL-VN-LIVE"
+      },
+      "is_real_event_evidence": true
+    },
+    {
+      "drill_id": "d-ph-func-01",
+      "deployment_id": "dep-ph-albay",
+      "kind": "functional",
+      "script_ref": { "type": "drill_script", "version": "1.1.0" },
+      "timezone": "Asia/Manila",
+      "typhoon_sequence": [
+        { "order": 1, "phase": "formation", "utc_at": "2026-08-12T02:00:00Z", "local_at": "2026-08-12 10:00 +08", "hazard_level_local_code": "PSWS-1" },
+        { "order": 2, "phase": "approach", "utc_at": "2026-08-12T05:00:00Z", "local_at": "2026-08-12 13:00 +08", "hazard_level_local_code": "PSWS-2" },
+        { "order": 3, "phase": "weakening", "utc_at": "2026-08-12T09:00:00Z", "local_at": "2026-08-12 17:00 +08", "hazard_level_local_code": "PSWS-1" }
+      ],
+      "injects": [
+        { "inject_id": "inj-net-ph-01", "kind": "network_outage", "utc_at": "2026-08-12T05:20:00Z", "expected_auto_degradation_level": "L2_assisted" }
+      ],
+      "metric_refs": [{ "type": "acceptance_metric", "version": "1.0.0" }],
+      "started_at": "2026-08-12T02:00:00Z",
+      "concluded_at": "2026-08-12T10:00:00Z",
+      "result": {
+        "passed": true,
+        "summary": "功能性演练通过，但为模拟场景且站点处于影子运行，证据不足以支持转真实值守或推广。",
+        "evidence_id": "EV-DRILL-PH-FUNC"
+      },
+      "is_real_event_evidence": false
+    },
+    {
+      "drill_id": "d-th-tt-01",
+      "deployment_id": "dep-th-surat",
+      "kind": "tabletop",
+      "script_ref": { "type": "drill_script", "version": "1.1.0" },
+      "timezone": "Asia/Bangkok",
+      "typhoon_sequence": [
+        { "order": 1, "phase": "formation", "utc_at": "2026-08-15T03:00:00Z", "local_at": "2026-08-15 10:00 +07", "hazard_level_local_code": "TH-W1" },
+        { "order": 2, "phase": "approach", "utc_at": "2026-08-15T06:00:00Z", "local_at": "2026-08-15 13:00 +07", "hazard_level_local_code": "TH-W2" }
+      ],
+      "injects": [],
+      "metric_refs": [{ "type": "acceptance_metric", "version": "1.0.0" }],
+      "started_at": "2026-08-15T03:00:00Z",
+      "concluded_at": "2026-08-15T08:00:00Z",
+      "result": {
+        "passed": true,
+        "summary": "桌面推演仅用于流程熟悉；站点被数据授权闸门拦截，未接触真实数据。",
+        "evidence_id": "EV-DRILL-TH-TT"
+      },
+      "is_real_event_evidence": false
+    }
+  ],
+  "operations": {
+    "degradation_events": [
+      {
+        "event_id": "deg-vn-01",
+        "deployment_id": "dep-vn-danang",
+        "trigger": "network_outage",
+        "from_level": "L3_autonomous",
+        "to_level": "L2_assisted",
+        "utc_at": "2026-08-24T21:10:00Z",
+        "automated": true,
+        "takeover_record_id": null
+      },
+      {
+        "event_id": "deg-vn-02",
+        "deployment_id": "dep-vn-danang",
+        "trigger": "sensor_drift",
+        "from_level": "L2_assisted",
+        "to_level": "L1_advisory",
+        "utc_at": "2026-08-24T21:40:00Z",
+        "automated": true,
+        "takeover_record_id": null
+      },
+      {
+        "event_id": "deg-vn-03",
+        "deployment_id": "dep-vn-danang",
+        "trigger": "confidence_drop",
+        "from_level": "L1_advisory",
+        "to_level": "L0_manual_only",
+        "utc_at": "2026-08-24T22:20:00Z",
+        "automated": true,
+        "takeover_record_id": "tk-vn-01"
+      },
+      {
+        "event_id": "deg-vn-04",
+        "deployment_id": "dep-vn-danang",
+        "trigger": "recovery",
+        "from_level": "L0_manual_only",
+        "to_level": "L2_assisted",
+        "utc_at": "2026-08-25T00:25:00Z",
+        "automated": true,
+        "takeover_record_id": null
+      }
+    ],
+    "manual_takeovers": [
+      {
+        "record_id": "tk-vn-01",
+        "deployment_id": "dep-vn-danang",
+        "operator_org_id": "VN-OP-01",
+        "operator_certificate_id": "CERT-VN-OP-07",
+        "utc_at": "2026-08-24T22:22:00Z",
+        "reason": "置信度跌破本地阈值，系统自动进入 L0 仅人工模式，值班员依法接管预警发布。",
+        "actions_log": [
+          "22:22Z 以人工身份核验 VN-S-02 水位与雨量站原始记录",
+          "22:35Z 电话（备份信道）通知 VN-PCTT 值班席并口头复述 VN-BD-4 等级",
+          "23:05Z 以人工签发沿海低洼地带转移提醒，系统输出封存不自动发布",
+          "2026-08-25T00:25Z 网络恢复、漂移站剔除后置信度回升，确认回 L2 辅助",
+          "2026-08-25T00:30Z 完成交接，系统恢复辅助值守"
+        ],
+        "handback_utc_at": "2026-08-25T00:30:00Z"
+      }
+    ]
+  },
+  "cross_border_sharing": {
+    "policy": {
+      "only_approved_alert_summary": true,
+      "excluded_categories": [
+        "原始传感器读数",
+        "模型置信度向量",
+        "未脱敏位置轨迹",
+        "人员个人信息"
+      ]
+    },
+    "shared_items": [
+      {
+        "share_id": "sh-vn-01",
+        "from_country": "VN",
+        "to_countries": ["PH", "TH", "ID", "MY", "KH", "LA"],
+        "category": "approved_alert_summary",
+        "summary_text": "（虚构）预警摘要：台风 PILOT-07 已于 UTC 2026-08-24 21:00 在越南中部沿海登陆，登陆点以东 0-6 小时内存在 VN-BD-4 级洪涝风险，建议沿海低洼地区按本地预案戒备。仅含等级与时序，不含传感器原值、模型内部数据或个人信息。",
+        "authorized": true,
+        "utc_at": "2026-08-24T22:45:00Z"
+      }
+    ]
+  },
+  "governance": {
+    "signatures": [
+      {
+        "signature_id": "sig-01",
+        "org_id": "ID-SECRETARIAT",
+        "country": "ID",
+        "document": "跨国台风洪涝试点合作备忘录（虚构）MOU-PILOT-2026-01",
+        "signed_utc_at": "2026-07-03T01:00:00Z",
+        "signed_local_at": "2026-07-03 08:00 WIB"
+      },
+      {
+        "signature_id": "sig-02",
+        "org_id": "PH-NDRR",
+        "country": "PH",
+        "document": "跨国台风洪涝试点合作备忘录（虚构）MOU-PILOT-2026-01",
+        "signed_utc_at": "2026-07-03T00:30:00Z",
+        "signed_local_at": "2026-07-03 08:30 PST"
+      },
+      {
+        "signature_id": "sig-03",
+        "org_id": "VN-PCTT",
+        "country": "VN",
+        "document": "跨国台风洪涝试点合作备忘录（虚构）MOU-PILOT-2026-01",
+        "signed_utc_at": "2026-07-03T03:00:00Z",
+        "signed_local_at": "2026-07-03 10:00 +07"
+      },
+      {
+        "signature_id": "sig-04",
+        "org_id": "TH-NDMR",
+        "country": "TH",
+        "document": "跨国台风洪涝试点合作备忘录（虚构）MOU-PILOT-2026-01",
+        "signed_utc_at": "2026-07-04T02:00:00Z",
+        "signed_local_at": "2026-07-04 09:00 +07"
+      },
+      {
+        "signature_id": "sig-05",
+        "org_id": "KH-DMA",
+        "country": "KH",
+        "document": "跨国台风洪涝试点合作备忘录（虚构）MOU-PILOT-2026-01",
+        "signed_utc_at": "2026-07-05T04:00:00Z",
+        "signed_local_at": "2026-07-05 11:00 +07"
+      }
+    ],
+    "funding_milestones": [
+      {
+        "milestone_id": "fm-01",
+        "label": "多方签署完成，启动并行部署与站点登记",
+        "due_utc_at": "2026-07-15T00:00:00Z",
+        "status": "released",
+        "evidence_id": "EV-MOU-01"
+      },
+      {
+        "milestone_id": "fm-02",
+        "label": "越南通过全要素演练并进入真实值守第一阶段",
+        "due_utc_at": "2026-08-31T00:00:00Z",
+        "status": "released",
+        "evidence_id": "EV-DRILL-VN-LIVE"
+      },
+      {
+        "milestone_id": "fm-03",
+        "label": "依据真实演练与运行证据评审越南第二站点扩大",
+        "due_utc_at": "2026-09-30T00:00:00Z",
+        "status": "released",
+        "evidence_id": "sd-vn-expand"
+      },
+      {
+        "milestone_id": "fm-th-01",
+        "label": "泰国数据授权前置款项（授权未获批前冻结）",
+        "due_utc_at": "2026-08-15T00:00:00Z",
+        "status": "withheld",
+        "evidence_id": "EV-DATA-TH-DENIED"
+      }
+    ],
+    "withdrawals": [
+      {
+        "withdrawal_id": "wd-cap-100",
+        "artifact_type": "technical_capability",
+        "version": "1.0.0",
+        "utc_at": "2026-07-12T03:00:00Z",
+        "reason": "演示版降级阈值未经本地网络条件验证，1.1.0 替代；任何引用 EV-CAP-100 的推广论据失效。",
+        "cascades_to": ["EV-CAP-100"]
+      }
+    ],
+    "scale_decisions": [
+      {
+        "decision_id": "sd-vn-expand",
+        "country": "VN",
+        "decision": "expand",
+        "decided_utc_at": "2026-09-10T03:00:00Z",
+        "basis_drill_ids": ["d-vn-fs-01", "d-vn-live-01"],
+        "basis_operation_event_ids": ["deg-vn-01", "deg-vn-02", "deg-vn-03", "deg-vn-04"],
+        "rationale": "全要素演练通过且真实台风 PILOT-07 中三次自动降级与一次人工接管留痕完整，验收按越南本地化阈值 1.1.0 达标；仅扩大到越南境内第二站点，不延伸到他国。"
+      },
+      {
+        "decision_id": "sd-ph-hold",
+        "country": "PH",
+        "decision": "hold",
+        "decided_utc_at": "2026-09-10T04:00:00Z",
+        "basis_drill_ids": ["d-ph-func-01"],
+        "basis_operation_event_ids": [],
+        "rationale": "仅有功能性演练（模拟场景），无真实事件运行证据，维持影子运行，不进入真实值守。"
+      },
+      {
+        "decision_id": "sd-th-hold",
+        "country": "TH",
+        "decision": "hold",
+        "decided_utc_at": "2026-09-10T05:00:00Z",
+        "basis_drill_ids": ["d-th-tt-01"],
+        "basis_operation_event_ids": [],
+        "rationale": "数据授权闸门未通过，仅有桌面推演；维持禁止部署，授权完成且补齐真实演练证据前不重审。"
+      }
+    ]
+  }
+}
