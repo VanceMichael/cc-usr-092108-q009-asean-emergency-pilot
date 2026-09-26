@@ -1,0 +1,221 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "跨国试点产品",
+  "description": "把参赛项目组织为某国本地试点的产品包。七类组件各自独立版本化；四项准入（本地化评审、数据授权、人员培训、回退方案）缺一不可，未全部通过不得进入真实值守。",
+  "type": "object",
+  "required": [
+    "domain",
+    "doc_version",
+    "product_id",
+    "project_id",
+    "host_country",
+    "components",
+    "admission",
+    "degradation_policy",
+    "cross_border_sharing",
+    "status"
+  ],
+  "properties": {
+    "domain": { "const": "asean-emergency-pilot" },
+    "doc_version": { "type": "integer", "minimum": 1 },
+    "product_id": { "type": "string", "pattern": "^pilot-[a-z]{2}-[a-z0-9-]+$" },
+    "project_id": { "type": "string", "pattern": "^prj-[a-z0-9-]+$" },
+    "host_country": { "type": "string", "minLength": 2 },
+    "deployment_sites": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/site" }
+    },
+    "responsible_agencies": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["agency", "role"],
+        "properties": {
+          "agency": { "type": "string", "minLength": 1 },
+          "role": {
+            "enum": ["competent_authority", "operator", "data_controller", "technical_support"]
+          },
+          "signoff_required": { "type": "boolean", "default": true }
+        },
+        "additionalProperties": false
+      }
+    },
+    "components": {
+      "type": "object",
+      "description": "七类组件各自版本化；任何组件变更只提升自身版本，不自动改变其他组件或准入结论。",
+      "required": [
+        "technical_capability",
+        "training_data_boundary",
+        "device_dependency",
+        "deployment_site",
+        "responsible_agency",
+        "drill_script",
+        "acceptance_criteria"
+      ],
+      "properties": {
+        "technical_capability": { "$ref": "#/$defs/versionedComponent" },
+        "training_data_boundary": { "$ref": "#/$defs/versionedComponent" },
+        "device_dependency": { "$ref": "#/$defs/versionedComponent" },
+        "deployment_site": { "$ref": "#/$defs/versionedComponent" },
+        "responsible_agency": { "$ref": "#/$defs/versionedComponent" },
+        "drill_script": { "$ref": "#/$defs/versionedComponent" },
+        "acceptance_criteria": { "$ref": "#/$defs/versionedComponent" }
+      },
+      "additionalProperties": false
+    },
+    "admission": {
+      "description": "进入真实值守的四项准入，缺一不可；每项独立记录证据与签署。",
+      "type": "object",
+      "required": [
+        "localization_review",
+        "data_authorization",
+        "personnel_training",
+        "rollback_plan"
+      ],
+      "properties": {
+        "localization_review": { "$ref": "#/$defs/gate" },
+        "data_authorization": { "$ref": "#/$defs/gate" },
+        "personnel_training": { "$ref": "#/$defs/gate" },
+        "rollback_plan": { "$ref": "#/$defs/gate" }
+      },
+      "additionalProperties": false
+    },
+    "degradation_policy": {
+      "type": "object",
+      "description": "网络中断、传感器漂移、置信度下降时自动降级，并强制留下人工接管记录。",
+      "required": ["triggers", "modes", "manual_takeover_required"],
+      "properties": {
+        "triggers": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "required": ["kind", "threshold", "to_mode"],
+            "properties": {
+              "kind": {
+                "enum": ["network_outage", "sensor_drift", "confidence_drop"]
+              },
+              "threshold": { "type": "string", "minLength": 1 },
+              "to_mode": {
+                "enum": ["autonomous", "assisted", "advisory_only", "manual"]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "modes": {
+          "type": "array",
+          "minItems": 4,
+          "items": {
+            "type": "object",
+            "required": ["mode", "rank", "system_may_emit_alert"],
+            "properties": {
+              "mode": {
+                "enum": ["autonomous", "assisted", "advisory_only", "manual"]
+              },
+              "rank": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "0=全自动，越大人工介入越强；多个触发同时存在时取最严（rank 最大）模式"
+              },
+              "system_may_emit_alert": { "type": "boolean" },
+              "description": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "manual_takeover_required": {
+          "type": "boolean",
+          "const": true
+        },
+        "takeover_record_fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "cross_border_sharing": {
+      "type": "object",
+      "required": ["summary_only", "require_authorization", "fields"],
+      "properties": {
+        "summary_only": { "type": "boolean", "const": true },
+        "require_authorization": { "type": "boolean", "const": true },
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "summary_id",
+              "hazard_type",
+              "severity_rank",
+              "area_label",
+              "issued_at_utc",
+              "advice_text",
+              "source_agency"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "status": {
+      "type": "object",
+      "required": ["phase"],
+      "properties": {
+        "phase": {
+          "enum": ["built", "admission_pending", "drill", "live_watch", "withdrawn", "scale_up"]
+        },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "versionedComponent": {
+      "type": "object",
+      "required": ["component_version", "summary", "updated_at"],
+      "properties": {
+        "component_version": {
+          "type": "string",
+          "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "summary": { "type": "string", "minLength": 1 },
+        "updated_at": { "type": "string", "format": "date" },
+        "changed_from": { "type": "string" },
+        "artifact_ref": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "site": {
+      "type": "object",
+      "required": ["site_id", "name", "sensors_available"],
+      "properties": {
+        "site_id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "sensors_available": { "type": "array", "items": { "type": "string" } },
+        "network_reliability": {
+          "enum": ["high", "medium", "low"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "gate": {
+      "type": "object",
+      "required": ["passed", "evidence_ref", "reviewer", "decided_at"],
+      "properties": {
+        "passed": { "type": "boolean" },
+        "evidence_ref": { "type": "string", "minLength": 1 },
+        "reviewer": { "type": "string", "minLength": 1 },
+        "decided_at": { "type": "string", "format": "date" },
+        "expires_at": { "type": "string", "format": "date" },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

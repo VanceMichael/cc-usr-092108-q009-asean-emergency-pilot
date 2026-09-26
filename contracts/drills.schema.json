@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "演练脚本与演练记录",
+  "description": "按台风事件真实时间顺序（形成→逼近→登陆→洪涝→灾后）编排的演练。任何降级都必须留下完整人工接管记录；演练证据是进入真实值守和扩大推广的唯一依据之一。",
+  "type": "object",
+  "required": ["domain", "doc_version", "product_id", "scripts", "runs"],
+  "properties": {
+    "domain": { "const": "asean-emergency-pilot" },
+    "doc_version": { "type": "integer", "minimum": 1 },
+    "product_id": { "type": "string" },
+    "scripts": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/script" }
+    },
+    "runs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/run" }
+    }
+  },
+  "$defs": {
+    "script": {
+      "type": "object",
+      "required": ["script_id", "script_version", "event_sequence", "injections", "expected"],
+      "properties": {
+        "script_id": { "type": "string", "pattern": "^scr-[a-z0-9-]+$" },
+        "script_version": {
+          "type": "string",
+          "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "event_sequence": {
+          "type": "array",
+          "minItems": 2,
+          "description": "台风事件顺序，必须按时间先后出现且不可乱序。",
+          "items": {
+            "type": "object",
+            "required": ["seq", "phase", "offset_hours"],
+            "properties": {
+              "seq": { "type": "integer", "minimum": 1 },
+              "phase": {
+                "enum": ["formation", "approach", "landfall", "flood", "post_event"]
+              },
+              "offset_hours": { "type": "number" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "injections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["at_seq", "kind", "detail"],
+            "properties": {
+              "at_seq": { "type": "integer", "minimum": 1 },
+              "kind": {
+                "enum": ["network_outage", "sensor_drift", "confidence_drop"]
+              },
+              "detail": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "expected": {
+          "type": "object",
+          "required": ["min_mode", "takeover_required"],
+          "properties": {
+            "min_mode": {
+              "enum": ["autonomous", "assisted", "advisory_only", "manual"]
+            },
+            "takeover_required": { "type": "boolean" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "run": {
+      "type": "object",
+      "required": [
+        "run_id",
+        "script_id",
+        "conducted_at_utc",
+        "passed",
+        "observed_mode",
+        "takeover_records"
+      ],
+      "properties": {
+        "run_id": { "type": "string", "pattern": "^run-[a-z0-9-]+$" },
+        "script_id": { "type": "string" },
+        "conducted_at_utc": {
+          "type": "string",
+          "description": "演练时间一律以 UTC 记录，避免七国时区歧义"
+        },
+        "passed": { "type": "boolean" },
+        "observed_mode": {
+          "enum": ["autonomous", "assisted", "advisory_only", "manual"]
+        },
+        "acceptance_hits": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "acceptance_misses": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "takeover_records": {
+          "type": "array",
+          "description": "每次降级必须对应一条人工接管记录；不得只降级不留痕。",
+          "items": { "$ref": "#/$defs/takeover" }
+        },
+        "cross_border_outputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["fields"],
+            "properties": {
+              "fields": { "type": "array", "items": { "type": "string" } }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "takeover": {
+      "type": "object",
+      "required": [
+        "trigger_kind",
+        "from_mode",
+        "to_mode",
+        "operator",
+        "began_at_utc",
+        "resolution"
+      ],
+      "properties": {
+        "trigger_kind": {
+          "enum": ["network_outage", "sensor_drift", "confidence_drop", "manual_initiative"]
+        },
+        "from_mode": {
+          "enum": ["autonomous", "assisted", "advisory_only", "manual"]
+        },
+        "to_mode": {
+          "enum": ["autonomous", "assisted", "advisory_only", "manual"]
+        },
+        "operator": { "type": "string", "minLength": 1 },
+        "began_at_utc": { "type": "string" },
+        "ended_at_utc": { "type": "string" },
+        "resolution": {
+          "enum": ["restored", "handed_over", "escalated", "ongoing"]
+        },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

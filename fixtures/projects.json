@@ -1,0 +1,94 @@
+{
+  "domain": "asean-emergency-pilot",
+  "version": 1,
+  "projects": [
+    {
+      "project_id": "prj-typhoon-flood",
+      "name": "风云眼：台风洪涝链预警（虚构）",
+      "hazard_types": ["typhoon", "flood", "urban_waterlogging"],
+      "origin_demo": {
+        "language": "zh-CN",
+        "hazard_scale_id": "demo-orange-red-v2",
+        "sensor_profile": {
+          "sensors": ["雨量站", "水位计", "风速仪", "雷达回波"],
+          "min_confidence": 0.9,
+          "sampling_interval_sec": 60
+        },
+        "data_regime": {
+          "country_code": "DEMO",
+          "outbound_allowed": true
+        }
+      },
+      "award": {
+        "won": true,
+        "competition": "东盟应急科技挑战赛（虚构）",
+        "prize": "一等奖",
+        "awarded_at": "2026-07-01",
+        "note": "获奖结果不作为上线许可"
+      },
+      "license": {
+        "deployment_license": "none",
+        "issued_by": [],
+        "issued_at": "2026-07-01",
+        "scope_note": "仅竞赛获奖；任何国家的试点或值守许可须由该国主管机构另行发放"
+      }
+    },
+    {
+      "project_id": "prj-flood-msg",
+      "name": "水乡信使：社区洪水短信预警（虚构）",
+      "hazard_types": ["flood"],
+      "origin_demo": {
+        "language": "en-SG",
+        "hazard_scale_id": "demo-sg-advisory",
+        "sensor_profile": {
+          "sensors": ["雨量站"],
+          "min_confidence": 0.8,
+          "sampling_interval_sec": 300
+        },
+        "data_regime": {
+          "country_code": "SG",
+          "outbound_allowed": false
+        }
+      },
+      "award": {
+        "won": true,
+        "competition": "东盟应急科技挑战赛（虚构）",
+        "prize": "三等奖",
+        "awarded_at": "2026-07-01"
+      },
+      "license": {
+        "deployment_license": "pilot",
+        "issued_by": ["SG-CDC-MET-XX"],
+        "issued_at": "2026-08-05",
+        "scope_note": "仅限新加坡境内两个社区站点试运行；效力不延及其他国家"
+      }
+    },
+    {
+      "project_id": "prj-landslide-sense",
+      "name": "山耳：滑坡次声监测（虚构）",
+      "hazard_types": ["landslide"],
+      "origin_demo": {
+        "language": "ja",
+        "hazard_scale_id": "demo-slope-a-d",
+        "sensor_profile": {
+          "sensors": ["次声阵列", "倾角计"],
+          "min_confidence": 0.85,
+          "sampling_interval_sec": 10
+        },
+        "data_regime": {
+          "country_code": "DEMO",
+          "outbound_allowed": true
+        }
+      },
+      "award": {
+        "won": false,
+        "competition": "东盟应急科技挑战赛（虚构）"
+      },
+      "license": {
+        "deployment_license": "none",
+        "issued_by": [],
+        "issued_at": "2026-07-01"
+      }
+    }
+  ]
+}

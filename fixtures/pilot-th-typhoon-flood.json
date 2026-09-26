@@ -1,0 +1,79 @@
+{
+  "domain": "asean-emergency-pilot",
+  "doc_version": 1,
+  "product_id": "pilot-th-typhoon-flood",
+  "project_id": "prj-typhoon-flood",
+  "host_country": "TH",
+  "deployment_sites": [
+    {
+      "site_id": "th-lopburi",
+      "name": "华富里河试点站（虚构）",
+      "sensors_available": ["自动雨量站", "水位计"],
+      "network_reliability": "medium"
+    }
+  ],
+  "responsible_agencies": [
+    { "agency": "泰国国家预警管理局（虚构）", "role": "competent_authority", "signoff_required": true },
+    { "agency": "参赛团队（虚构）", "role": "technical_support", "signoff_required": false }
+  ],
+  "components": {
+    "technical_capability": { "component_version": "v1.1.0", "summary": "泰语界面，映射泰国T1-T4四级（虚构）", "updated_at": "2026-08-22" },
+    "training_data_boundary": { "component_version": "v1.0.0", "summary": "同越南版训练边界，本地真实水文数据未纳入", "updated_at": "2026-08-10" },
+    "device_dependency": { "component_version": "v1.0.0", "summary": "仅雨量站+水位计，无雷达、无风速仪", "updated_at": "2026-08-21" },
+    "deployment_site": { "component_version": "v1.0.0", "summary": "华富里河单站限定部署", "updated_at": "2026-08-22" },
+    "responsible_agency": { "component_version": "v0.9.0", "summary": "值守与数据控制机构尚未最终指定", "updated_at": "2026-08-23" },
+    "drill_script": { "component_version": "v1.0.0", "summary": "泰国化台风链脚本草案", "updated_at": "2026-08-28" },
+    "acceptance_criteria": { "component_version": "v1.0.0", "summary": "沿用越南五项验收指标待本地确认", "updated_at": "2026-09-01" }
+  },
+  "admission": {
+    "localization_review": {
+      "passed": true,
+      "evidence_ref": "rev-th-loc-002（虚构）",
+      "reviewer": "泰国国家预警管理局（虚构）",
+      "decided_at": "2026-08-24"
+    },
+    "data_authorization": {
+      "passed": false,
+      "evidence_ref": "dat-th-exp-pending（虚构）：跨境摘要字段范围仍在审",
+      "reviewer": "泰国国家预警管理局跨境事务组（虚构）",
+      "decided_at": "2026-08-26",
+      "note": "数据授权未通过前不得处理真实值守数据流"
+    },
+    "personnel_training": {
+      "passed": true,
+      "evidence_ref": "trn-th-ops-001（虚构）：6名人员完成培训",
+      "reviewer": "泰国国家预警管理局（虚构）",
+      "decided_at": "2026-09-03"
+    },
+    "rollback_plan": {
+      "passed": true,
+      "evidence_ref": "rb-th-001（虚构）：回退到人工流程方案已登记，尚未演练验证",
+      "reviewer": "泰国国家预警管理局（虚构）",
+      "decided_at": "2026-09-03"
+    }
+  },
+  "degradation_policy": {
+    "triggers": [
+      { "kind": "network_outage", "threshold": "心跳丢失持续120秒", "to_mode": "advisory_only" },
+      { "kind": "sensor_drift", "threshold": "与邻近参照偏差>15%持续10分钟", "to_mode": "assisted" },
+      { "kind": "confidence_drop", "threshold": "综合置信度<0.60", "to_mode": "manual" }
+    ],
+    "modes": [
+      { "mode": "autonomous", "rank": 0, "system_may_emit_alert": true, "description": "自动发布" },
+      { "mode": "assisted", "rank": 1, "system_may_emit_alert": true, "description": "人工确认后发布" },
+      { "mode": "advisory_only", "rank": 2, "system_may_emit_alert": false, "description": "仅建议" },
+      { "mode": "manual", "rank": 3, "system_may_emit_alert": false, "description": "完全人工" }
+    ],
+    "manual_takeover_required": true,
+    "takeover_record_fields": ["trigger_kind", "from_mode", "to_mode", "operator", "began_at_utc", "resolution"]
+  },
+  "cross_border_sharing": {
+    "summary_only": true,
+    "require_authorization": true,
+    "fields": ["summary_id", "hazard_type", "severity_rank", "issued_at_utc", "source_agency"]
+  },
+  "status": {
+    "phase": "admission_pending",
+    "note": "数据授权未过，禁止进入真实值守；获奖不豁免任何准入项"
+  }
+}

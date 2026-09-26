@@ -1,0 +1,134 @@
+{
+  "domain": "asean-emergency-pilot",
+  "doc_version": 3,
+  "product_id": "pilot-vn-typhoon-flood",
+  "project_id": "prj-typhoon-flood",
+  "host_country": "VN",
+  "deployment_sites": [
+    {
+      "site_id": "vn-dad",
+      "name": "岘港沿海试点站（虚构）",
+      "sensors_available": ["自动雨量站", "水位计", "风速仪"],
+      "network_reliability": "medium"
+    },
+    {
+      "site_id": "vn-qbi",
+      "name": "广平内河试点站（虚构）",
+      "sensors_available": ["自动雨量站", "水位计"],
+      "network_reliability": "low"
+    }
+  ],
+  "responsible_agencies": [
+    { "agency": "越南灾害应对协调局（虚构）", "role": "competent_authority", "signoff_required": true },
+    { "agency": "岘港市灾害值守组（虚构）", "role": "operator", "signoff_required": true },
+    { "agency": "越南灾害应对协调局数据授权处（虚构）", "role": "data_controller", "signoff_required": true },
+    { "agency": "参赛团队（虚构）", "role": "technical_support", "signoff_required": false }
+  ],
+  "components": {
+    "technical_capability": {
+      "component_version": "v1.2.0",
+      "summary": "台风路径与城市内涝链预警；界面越南语化；输出映射到越南蓝/黄/橙/红四级，原演示橙红二级色标不再使用",
+      "updated_at": "2026-08-18",
+      "changed_from": "v1.1.0",
+      "artifact_ref": "artifacts/vn/capability-1.2.0（虚构）"
+    },
+    "training_data_boundary": {
+      "component_version": "v1.0.0",
+      "summary": "训练数据仅含公开台风样本与合成洪涝样本，不含越南本地站点真实历史水文数据；对越南雨季地形外推的置信度上限登记为0.78",
+      "updated_at": "2026-08-10",
+      "artifact_ref": "artifacts/vn/data-boundary-1.0.0（虚构）"
+    },
+    "device_dependency": {
+      "component_version": "v1.1.0",
+      "summary": "试点站点无雷达回波，仅雨量站+水位计（广平站无风速仪）；缺失雷达特征时路径短临模块降为辅助建议，不得自动发红色预警",
+      "updated_at": "2026-08-17",
+      "changed_from": "v1.0.0",
+      "artifact_ref": "artifacts/vn/device-dep-1.1.0（虚构）"
+    },
+    "deployment_site": {
+      "component_version": "v2.0.0",
+      "summary": "岘港沿海站与广平内河站两处限定部署；广平站网络可靠性低，断网阈值单独配置",
+      "updated_at": "2026-08-19",
+      "changed_from": "v1.0.0",
+      "artifact_ref": "artifacts/vn/sites-2.0.0（虚构）"
+    },
+    "responsible_agency": {
+      "component_version": "v1.0.0",
+      "summary": "主管、值守、数据控制三类责任机构均已登记并指定越南本地人员；参赛团队仅技术支持，无本地处置指挥权",
+      "updated_at": "2026-08-12",
+      "artifact_ref": "artifacts/vn/agencies-1.0.0（虚构）"
+    },
+    "drill_script": {
+      "component_version": "v1.1.0",
+      "summary": "按形成→逼近→登陆→洪涝→灾后五阶段越南化脚本，含断网、水位计漂移、置信度下降三类注入",
+      "updated_at": "2026-09-05",
+      "changed_from": "v1.0.0",
+      "artifact_ref": "artifacts/vn/drill-1.1.0（虚构）"
+    },
+    "acceptance_criteria": {
+      "component_version": "v1.0.0",
+      "summary": "预警提前量、误报率、降级触发正确率、接管记录完整率、跨境字段合规率五项指标，全部达标方可验收",
+      "updated_at": "2026-09-01",
+      "artifact_ref": "artifacts/vn/acceptance-1.0.0（虚构）"
+    }
+  },
+  "admission": {
+    "localization_review": {
+      "passed": true,
+      "evidence_ref": "rev-vn-loc-001（虚构）：越南语界面、四级色标映射、单位与地名审查通过",
+      "reviewer": "越南灾害应对协调局（虚构）",
+      "decided_at": "2026-08-19"
+    },
+    "data_authorization": {
+      "passed": true,
+      "evidence_ref": "dat-vn-exp-014（虚构）：本地数据境内处理授权；出境仅限七项预警摘要字段",
+      "reviewer": "越南灾害应对协调局数据授权处（虚构）",
+      "decided_at": "2026-08-20"
+    },
+    "personnel_training": {
+      "passed": true,
+      "evidence_ref": "trn-vn-ops-007（虚构）：两站12名值守人员完成降级接管与回退实操考核",
+      "reviewer": "岘港市灾害值守组（虚构）",
+      "decided_at": "2026-09-02"
+    },
+    "rollback_plan": {
+      "passed": true,
+      "evidence_ref": "rb-vn-003（虚构）：30分钟内回退到人工电话+广播流程，已在演练中验证",
+      "reviewer": "越南灾害应对协调局（虚构）",
+      "decided_at": "2026-09-03"
+    }
+  },
+  "degradation_policy": {
+    "triggers": [
+      { "kind": "network_outage", "threshold": "心跳丢失持续120秒（广平站60秒）", "to_mode": "advisory_only" },
+      { "kind": "sensor_drift", "threshold": "同一传感器与邻近参照偏差>15%持续10分钟", "to_mode": "assisted" },
+      { "kind": "confidence_drop", "threshold": "综合置信度<0.75", "to_mode": "advisory_only" },
+      { "kind": "confidence_drop", "threshold": "综合置信度<0.60", "to_mode": "manual" }
+    ],
+    "modes": [
+      { "mode": "autonomous", "rank": 0, "system_may_emit_alert": true, "description": "系统可自动发布预警" },
+      { "mode": "assisted", "rank": 1, "system_may_emit_alert": true, "description": "系统建议、人工确认后发布" },
+      { "mode": "advisory_only", "rank": 2, "system_may_emit_alert": false, "description": "仅向值守人员提供建议，不得自动对外发布" },
+      { "mode": "manual", "rank": 3, "system_may_emit_alert": false, "description": "完全人工流程，系统只显示数据" }
+    ],
+    "manual_takeover_required": true,
+    "takeover_record_fields": ["trigger_kind", "from_mode", "to_mode", "operator", "began_at_utc", "resolution"]
+  },
+  "cross_border_sharing": {
+    "summary_only": true,
+    "require_authorization": true,
+    "fields": [
+      "summary_id",
+      "hazard_type",
+      "severity_rank",
+      "area_label",
+      "issued_at_utc",
+      "advice_text",
+      "source_agency"
+    ]
+  },
+  "status": {
+    "phase": "live_watch",
+    "note": "四项准入全部通过且全流程演练合格后，于2026-09-12进入限定站点真实值守；获奖本身不构成本许可"
+  }
+}

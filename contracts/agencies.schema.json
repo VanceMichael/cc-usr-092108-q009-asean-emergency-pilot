@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "七国机构资料",
+  "description": "各参与国的主管机构、时区、语言、灾种分级标准与数据出境规则。每个国家独立掌握本地风险与处置。",
+  "type": "object",
+  "required": ["domain", "version", "agencies"],
+  "properties": {
+    "domain": { "const": "asean-emergency-pilot" },
+    "version": { "type": "integer", "minimum": 1 },
+    "agencies": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": { "$ref": "#/$defs/agency" }
+    }
+  },
+  "$defs": {
+    "agency": {
+      "type": "object",
+      "required": [
+        "country_code",
+        "country_name",
+        "agency_name",
+        "timezone",
+        "languages",
+        "hazard_scale",
+        "data_export"
+      ],
+      "properties": {
+        "country_code": {
+          "enum": ["VN", "TH", "ID", "MY", "PH", "SG", "KH"]
+        },
+        "country_name": { "type": "string", "minLength": 1 },
+        "agency_name": { "type": "string", "minLength": 1 },
+        "timezone": {
+          "type": "string",
+          "description": "IANA 时区标识，如 Asia/Ho_Chi_Minh",
+          "minLength": 1
+        },
+        "languages": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "hazard_scale": {
+          "type": "object",
+          "description": "本国灾种分级；等级代码与含义与原演示环境不同，必须显式映射。",
+          "required": ["scale_id", "levels"],
+          "properties": {
+            "scale_id": { "type": "string", "minLength": 1 },
+            "levels": {
+              "type": "array",
+              "minItems": 2,
+              "items": {
+                "type": "object",
+                "required": ["code", "label", "rank"],
+                "properties": {
+                  "code": { "type": "string", "minLength": 1 },
+                  "label": { "type": "string", "minLength": 1 },
+                  "rank": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "description": "数值越大越严重，跨国比较时只比较 rank"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "data_export": {
+          "type": "object",
+          "required": ["requires_authorization", "allowed_outbound_fields", "authority"],
+          "properties": {
+            "requires_authorization": { "type": "boolean" },
+            "allowed_outbound_fields": {
+              "type": "array",
+              "description": "获批准许出境的字段白名单；预警原始数据、站点明细不得出境，跨境只共享预警摘要。",
+              "items": {
+                "enum": [
+                  "summary_id",
+                  "hazard_type",
+                  "severity_rank",
+                  "area_label",
+                  "issued_at_utc",
+                  "advice_text",
+                  "source_agency"
+                ]
+              },
+              "uniqueItems": true
+            },
+            "forbidden_fields": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "authority": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

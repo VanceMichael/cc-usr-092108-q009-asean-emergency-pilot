@@ -1,0 +1,104 @@
+{
+  "domain": "asean-emergency-pilot",
+  "doc_version": 1,
+  "product_id": "pilot-vn-typhoon-flood",
+  "scripts": [
+    {
+      "script_id": "scr-vn-typhoon-chain",
+      "script_version": "v1.1.0",
+      "event_sequence": [
+        { "seq": 1, "phase": "formation", "offset_hours": 0 },
+        { "seq": 2, "phase": "approach", "offset_hours": 24 },
+        { "seq": 3, "phase": "landfall", "offset_hours": 40 },
+        { "seq": 4, "phase": "flood", "offset_hours": 44 },
+        { "seq": 5, "phase": "post_event", "offset_hours": 72 }
+      ],
+      "injections": [
+        { "at_seq": 3, "kind": "network_outage", "detail": "登陆阶段岘港站心跳丢失，期望降级 advisory_only 并人工接管" },
+        { "at_seq": 4, "kind": "sensor_drift", "detail": "洪涝阶段广平站水位计与邻站偏差21%，期望降级 assisted" },
+        { "at_seq": 4, "kind": "confidence_drop", "detail": "综合置信度跌至0.58，多重触发并存时取最严 manual" }
+      ],
+      "expected": {
+        "min_mode": "manual",
+        "takeover_required": true
+      }
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "run-vn-2026-09-08",
+      "script_id": "scr-vn-typhoon-chain",
+      "conducted_at_utc": "2026-09-08T01:00:00Z",
+      "passed": true,
+      "observed_mode": "manual",
+      "acceptance_hits": [
+        "预警提前量达标",
+        "降级触发正确率达标",
+        "接管记录完整率100%",
+        "跨境字段合规率100%"
+      ],
+      "acceptance_misses": [],
+      "takeover_records": [
+        {
+          "trigger_kind": "network_outage",
+          "from_mode": "autonomous",
+          "to_mode": "advisory_only",
+          "operator": "阮文甲（虚构值守员）",
+          "began_at_utc": "2026-09-08T01:40:00Z",
+          "ended_at_utc": "2026-09-08T02:05:00Z",
+          "resolution": "restored",
+          "note": "通信恢复后由人工确认返回自主模式"
+        },
+        {
+          "trigger_kind": "sensor_drift",
+          "from_mode": "autonomous",
+          "to_mode": "assisted",
+          "operator": "陈氏平（虚构值守员）",
+          "began_at_utc": "2026-09-08T01:52:00Z",
+          "ended_at_utc": "2026-09-08T02:30:00Z",
+          "resolution": "escalated",
+          "note": "水位计偏差持续，升级现场校准"
+        },
+        {
+          "trigger_kind": "confidence_drop",
+          "from_mode": "assisted",
+          "to_mode": "manual",
+          "operator": "陈氏平（虚构值守员）",
+          "began_at_utc": "2026-09-08T01:55:00Z",
+          "ended_at_utc": "2026-09-08T03:20:00Z",
+          "resolution": "handed_over",
+          "note": "置信度0.58，转完全人工电话+广播流程"
+        }
+      ],
+      "cross_border_outputs": [
+        {
+          "fields": ["summary_id", "hazard_type", "severity_rank", "area_label", "issued_at_utc", "advice_text", "source_agency"]
+        }
+      ]
+    },
+    {
+      "run_id": "run-vn-2026-08-25",
+      "script_id": "scr-vn-typhoon-chain",
+      "conducted_at_utc": "2026-08-25T01:00:00Z",
+      "passed": false,
+      "observed_mode": "manual",
+      "acceptance_hits": ["预警提前量达标"],
+      "acceptance_misses": ["接管记录完整率不达标：一次网络降级无接管记录", "跨境输出夹带 raw_station_data"],
+      "takeover_records": [
+        {
+          "trigger_kind": "sensor_drift",
+          "from_mode": "autonomous",
+          "to_mode": "assisted",
+          "operator": "阮文甲（虚构值守员）",
+          "began_at_utc": "2026-08-25T01:52:00Z",
+          "resolution": "restored"
+        }
+      ],
+      "cross_border_outputs": [
+        {
+          "fields": ["summary_id", "hazard_type", "severity_rank", "raw_station_data"]
+        }
+      ]
+    }
+  ]
+}

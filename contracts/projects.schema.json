@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "参赛项目清单",
+  "description": "参赛与获奖事实的登记。获奖仅是竞赛结果，不构成任何国家的上线或值守许可；部署许可在试点产品中单独登记。",
+  "type": "object",
+  "required": ["domain", "version", "projects"],
+  "properties": {
+    "domain": { "const": "asean-emergency-pilot" },
+    "version": { "type": "integer", "minimum": 1 },
+    "projects": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/project" }
+    }
+  },
+  "$defs": {
+    "project": {
+      "type": "object",
+      "required": ["project_id", "name", "hazard_types", "origin_demo", "award", "license"],
+      "properties": {
+        "project_id": { "type": "string", "pattern": "^prj-[a-z0-9-]+$" },
+        "name": { "type": "string", "minLength": 1 },
+        "hazard_types": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": ["typhoon", "flood", "storm_surge", "landslide", "urban_waterlogging", "industrial_safety"]
+          }
+        },
+        "origin_demo": {
+          "type": "object",
+          "description": "原演示环境的条件；每到一个新国家都必须重新适配，不能默认沿用。",
+          "required": ["language", "hazard_scale_id", "sensor_profile", "data_regime"],
+          "properties": {
+            "language": { "type": "string" },
+            "hazard_scale_id": { "type": "string" },
+            "sensor_profile": {
+              "type": "object",
+              "required": ["sensors"],
+              "properties": {
+                "sensors": { "type": "array", "items": { "type": "string" } },
+                "min_confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+                "sampling_interval_sec": { "type": "integer", "minimum": 1 }
+              },
+              "additionalProperties": false
+            },
+            "data_regime": {
+              "type": "object",
+              "required": ["country_code", "outbound_allowed"],
+              "properties": {
+                "country_code": { "type": "string", "minLength": 2 },
+                "outbound_allowed": { "type": "boolean" }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "award": {
+          "type": "object",
+          "required": ["won", "competition"],
+          "properties": {
+            "won": { "type": "boolean" },
+            "competition": { "type": "string" },
+            "prize": { "type": "string" },
+            "awarded_at": { "type": "string", "format": "date" },
+            "note": {
+              "type": "string",
+              "default": "获奖结果不作为上线许可"
+            }
+          },
+          "additionalProperties": false
+        },
+        "license": {
+          "type": "object",
+          "description": "部署许可状态，独立于获奖事实。none=仅有竞赛获奖；pilot=限定地点的试运行；不可由获奖自动推导。",
+          "required": ["deployment_license", "issued_by", "issued_at"],
+          "properties": {
+            "deployment_license": { "enum": ["none", "pilot", "full"] },
+            "issued_by": { "type": "array", "items": { "type": "string" } },
+            "issued_at": { "type": "string", "format": "date" },
+            "scope_note": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

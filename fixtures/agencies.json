@@ -1,0 +1,167 @@
+{
+  "domain": "asean-emergency-pilot",
+  "version": 1,
+  "agencies": [
+    {
+      "country_code": "VN",
+      "country_name": "越南",
+      "agency_name": "越南灾害应对协调局（虚构）",
+      "timezone": "Asia/Ho_Chi_Minh",
+      "languages": ["vi"],
+      "hazard_scale": {
+        "scale_id": "vn-warning-colors-2026",
+        "levels": [
+          { "code": "VN-BLUE", "label": "Nguy cơ thấp（蓝色·低风险，虚构）", "rank": 0 },
+          { "code": "VN-YELLOW", "label": "Cảnh báo（黄色·预警，虚构）", "rank": 1 },
+          { "code": "VN-ORANGE", "label": "Báo động（橙色·警报，虚构）", "rank": 2 },
+          { "code": "VN-RED", "label": "Khẩn cấp（红色·紧急，虚构）", "rank": 3 }
+        ]
+      },
+      "data_export": {
+        "requires_authorization": true,
+        "allowed_outbound_fields": [
+          "summary_id",
+          "hazard_type",
+          "severity_rank",
+          "area_label",
+          "issued_at_utc",
+          "advice_text",
+          "source_agency"
+        ],
+        "forbidden_fields": ["raw_station_data", "sensor_health", "operator_notes", "resident_contacts"],
+        "authority": "越南灾害应对协调局数据授权处（虚构）"
+      }
+    },
+    {
+      "country_code": "TH",
+      "country_name": "泰国",
+      "agency_name": "泰国国家预警管理局（虚构）",
+      "timezone": "Asia/Bangkok",
+      "languages": ["th"],
+      "hazard_scale": {
+        "scale_id": "th-t1t4-2026",
+        "levels": [
+          { "code": "TH-T1", "label": "ระดับ 1（一级，虚构）", "rank": 0 },
+          { "code": "TH-T2", "label": "ระดับ 2（二级，虚构）", "rank": 1 },
+          { "code": "TH-T3", "label": "ระดับ 3（三级，虚构）", "rank": 2 },
+          { "code": "TH-T4", "label": "ระดับ 4（四级，虚构）", "rank": 3 }
+        ]
+      },
+      "data_export": {
+        "requires_authorization": true,
+        "allowed_outbound_fields": ["summary_id", "hazard_type", "severity_rank", "issued_at_utc", "source_agency"],
+        "forbidden_fields": ["raw_station_data", "sensor_health"],
+        "authority": "泰国国家预警管理局跨境事务组（虚构）"
+      }
+    },
+    {
+      "country_code": "ID",
+      "country_name": "印度尼西亚",
+      "agency_name": "印尼灾害减缓署（虚构）",
+      "timezone": "Asia/Jakarta",
+      "languages": ["id"],
+      "hazard_scale": {
+        "scale_id": "id-advisory-awas-2026",
+        "levels": [
+          { "code": "ID-D", "label": "Waspada（留意，虚构）", "rank": 0 },
+          { "code": "ID-C", "label": "Siaga（戒备，虚构）", "rank": 1 },
+          { "code": "ID-B", "label": "Awas（警惕，虚构）", "rank": 2 },
+          { "code": "ID-A", "label": "Bahaya（危险，虚构）", "rank": 3 }
+        ]
+      },
+      "data_export": {
+        "requires_authorization": true,
+        "allowed_outbound_fields": ["summary_id", "hazard_type", "severity_rank", "area_label", "issued_at_utc", "source_agency"],
+        "forbidden_fields": ["raw_station_data", "operator_notes"],
+        "authority": "印尼灾害减缓署数据合规室（虚构）"
+      }
+    },
+    {
+      "country_code": "MY",
+      "country_name": "马来西亚",
+      "agency_name": "马来西亚国家水文网络中心（虚构）",
+      "timezone": "Asia/Kuala_Lumpur",
+      "languages": ["ms", "en"],
+      "hazard_scale": {
+        "scale_id": "my-1to3-2026",
+        "levels": [
+          { "code": "MY-1", "label": "Nasihat（提示，虚构）", "rank": 0 },
+          { "code": "MY-2", "label": "Amaran（警告，虚构）", "rank": 1 },
+          { "code": "MY-3", "label": "Bahaya（危险，虚构）", "rank": 2 }
+        ]
+      },
+      "data_export": {
+        "requires_authorization": true,
+        "allowed_outbound_fields": ["summary_id", "hazard_type", "severity_rank", "issued_at_utc", "advice_text", "source_agency"],
+        "forbidden_fields": ["raw_station_data", "sensor_health"],
+        "authority": "马来西亚国家水文网络中心授权委员会（虚构）"
+      }
+    },
+    {
+      "country_code": "PH",
+      "country_name": "菲律宾",
+      "agency_name": "菲律宾民防预警局（虚构）",
+      "timezone": "Asia/Manila",
+      "languages": ["fil", "en"],
+      "hazard_scale": {
+        "scale_id": "ph-tcws-1to5-2026",
+        "levels": [
+          { "code": "PH-TCWS-1", "label": "Wind Signal No.1（一号风讯，虚构样例）", "rank": 0 },
+          { "code": "PH-TCWS-2", "label": "Wind Signal No.2（二号风讯，虚构样例）", "rank": 1 },
+          { "code": "PH-TCWS-3", "label": "Wind Signal No.3（三号风讯，虚构样例）", "rank": 2 },
+          { "code": "PH-TCWS-4", "label": "Wind Signal No.4（四号风讯，虚构样例）", "rank": 3 },
+          { "code": "PH-TCWS-5", "label": "Wind Signal No.5（五号风讯，虚构样例）", "rank": 4 }
+        ]
+      },
+      "data_export": {
+        "requires_authorization": true,
+        "allowed_outbound_fields": ["summary_id", "hazard_type", "severity_rank", "area_label", "issued_at_utc", "advice_text", "source_agency"],
+        "forbidden_fields": ["raw_station_data", "resident_contacts"],
+        "authority": "菲律宾民防预警局数据官（虚构）"
+      }
+    },
+    {
+      "country_code": "SG",
+      "country_name": "新加坡",
+      "agency_name": "新加坡民防与气象联合中心（虚构）",
+      "timezone": "Asia/Singapore",
+      "languages": ["en", "ms", "zh"],
+      "hazard_scale": {
+        "scale_id": "sg-advisory-3-2026",
+        "levels": [
+          { "code": "SG-ADV", "label": "Advisory（提示，虚构）", "rank": 0 },
+          { "code": "SG-WRN", "label": "Warning（警告，虚构）", "rank": 1 },
+          { "code": "SG-CRT", "label": "Critical（危急，虚构）", "rank": 2 }
+        ]
+      },
+      "data_export": {
+        "requires_authorization": true,
+        "allowed_outbound_fields": ["summary_id", "hazard_type", "severity_rank", "issued_at_utc", "source_agency"],
+        "forbidden_fields": ["raw_station_data", "sensor_health", "operator_notes"],
+        "authority": "新加坡民防与气象联合中心合规台（虚构）"
+      }
+    },
+    {
+      "country_code": "KH",
+      "country_name": "柬埔寨",
+      "agency_name": "柬埔寨国家灾害管理委员会秘书处（虚构）",
+      "timezone": "Asia/Phnom_Penh",
+      "languages": ["km"],
+      "hazard_scale": {
+        "scale_id": "kh-1to4-2026",
+        "levels": [
+          { "code": "KH-1", "label": "កម្រិត ១（一级，虚构）", "rank": 0 },
+          { "code": "KH-2", "label": "កម្រិត ២（二级，虚构）", "rank": 1 },
+          { "code": "KH-3", "label": "កម្រិត ៣（三级，虚构）", "rank": 2 },
+          { "code": "KH-4", "label": "កម្រិត ៤（四级，虚构）", "rank": 3 }
+        ]
+      },
+      "data_export": {
+        "requires_authorization": true,
+        "allowed_outbound_fields": ["summary_id", "hazard_type", "severity_rank", "area_label", "issued_at_utc", "source_agency"],
+        "forbidden_fields": ["raw_station_data"],
+        "authority": "柬埔寨国家灾害管理委员会秘书处（虚构）"
+      }
+    }
+  ]
+}

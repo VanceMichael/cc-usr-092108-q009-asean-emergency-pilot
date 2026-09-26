@@ -1,0 +1,104 @@
+{
+  "domain": "asean-emergency-pilot",
+  "doc_version": 1,
+  "events": [
+    {
+      "event_id": "evt-vn-signoff",
+      "at_utc": "2026-09-04T03:30:00Z",
+      "local_time_context": { "timezone": "Asia/Ho_Chi_Minh", "local_text": "2026-09-04 10:30 ICT" },
+      "kind": "multiparty_signoff",
+      "country_scope": ["VN"],
+      "product_id": "pilot-vn-typhoon-flood",
+      "detail": "主管、值守、数据控制三方完成准入签署（虚构）",
+      "evidence_refs": ["rev-vn-loc-001", "dat-vn-exp-014", "trn-vn-ops-007", "rb-vn-003"]
+    },
+    {
+      "event_id": "evt-parallel-deploy",
+      "at_utc": "2026-09-05T08:00:00Z",
+      "local_time_context": { "timezone": "Asia/Jakarta", "local_text": "2026-09-05 15:00 WIB（部署协调以UTC为准）" },
+      "kind": "parallel_deployment",
+      "country_scope": ["VN", "TH", "ID", "PH"],
+      "detail": "四国并行开展站点部署准备；各国独立准入，进度互不背书（虚构）"
+    },
+    {
+      "event_id": "evt-typhoon-formation",
+      "at_utc": "2026-09-14T18:00:00Z",
+      "kind": "typhoon_phase",
+      "country_scope": ["PH", "VN"],
+      "product_id": "pilot-vn-typhoon-flood",
+      "phase": "formation",
+      "detail": "虚构台风「阵兰」在菲律宾以东洋面形成"
+    },
+    {
+      "event_id": "evt-funding-m1",
+      "at_utc": "2026-09-15T02:00:00Z",
+      "local_time_context": { "timezone": "Asia/Singapore", "local_text": "2026-09-15 10:00 SGT（财务工作日上午）" },
+      "kind": "funding_milestone",
+      "country_scope": ["ASEAN"],
+      "product_id": "pilot-vn-typhoon-flood",
+      "detail": "里程碑M1：准入齐备且演练合格，拨付试点运行款（虚构）；付款不构成扩大推广许可"
+    },
+    {
+      "event_id": "evt-typhoon-approach",
+      "at_utc": "2026-09-15T12:00:00Z",
+      "kind": "typhoon_phase",
+      "country_scope": ["VN"],
+      "product_id": "pilot-vn-typhoon-flood",
+      "phase": "approach",
+      "detail": "台风逼近越南中部沿海"
+    },
+    {
+      "event_id": "evt-typhoon-landfall",
+      "at_utc": "2026-09-16T14:00:00Z",
+      "local_time_context": { "timezone": "Asia/Ho_Chi_Minh", "local_text": "2026-09-16 21:00 ICT" },
+      "kind": "typhoon_phase",
+      "country_scope": ["VN"],
+      "product_id": "pilot-vn-typhoon-flood",
+      "phase": "landfall",
+      "detail": "台风在岘港附近登陆，站点触发断网降级与人工接管"
+    },
+    {
+      "event_id": "evt-typhoon-flood",
+      "at_utc": "2026-09-16T20:00:00Z",
+      "kind": "typhoon_phase",
+      "country_scope": ["VN"],
+      "product_id": "pilot-vn-typhoon-flood",
+      "phase": "flood",
+      "detail": "广平省内河水位超警，置信度下降转人工流程"
+    },
+    {
+      "event_id": "evt-drill-run-ok",
+      "at_utc": "2026-09-08T01:00:00Z",
+      "kind": "drill_run",
+      "country_scope": ["VN"],
+      "product_id": "pilot-vn-typhoon-flood",
+      "detail": "全流程演练合格",
+      "evidence_refs": ["run-vn-2026-09-08"]
+    },
+    {
+      "event_id": "evt-drill-run-fail",
+      "at_utc": "2026-08-25T01:00:00Z",
+      "kind": "drill_run",
+      "country_scope": ["VN"],
+      "product_id": "pilot-vn-typhoon-flood",
+      "detail": "演练不合格：接管记录缺失且跨境字段违规",
+      "evidence_refs": ["run-vn-2026-08-25"]
+    },
+    {
+      "event_id": "evt-id-withdraw",
+      "at_utc": "2026-09-17T01:30:00Z",
+      "local_time_context": { "timezone": "Asia/Jakarta", "local_text": "2026-09-17 08:30 WIB" },
+      "kind": "withdrawal",
+      "country_scope": ["ID"],
+      "detail": "印尼撤回其并行部署成果（虚构）：即时冻结印尼线扩大推广，不影响越南独立运行"
+    },
+    {
+      "event_id": "evt-scaleup-proposed",
+      "at_utc": "2026-09-20T06:00:00Z",
+      "kind": "scale_up_decision",
+      "country_scope": ["VN", "ID"],
+      "product_id": "pilot-vn-typhoon-flood",
+      "detail": "主办方提议向越南扩点并把成果推广至印尼；印尼范围因撤回被冻结，越南范围须凭真实演练与运行证据评审"
+    }
+  ]
+}
